@@ -1,4 +1,4 @@
-from .PromptSet import PromptSet
+from ..PromptSet import PromptSet
 import os
 
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
