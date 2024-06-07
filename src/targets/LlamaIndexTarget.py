@@ -3,10 +3,8 @@ from .Target import Target
 
 class LlamaIndexTarget(Target):
     
-    def __init__(self, agent, options: dict = {}, prompt_key: str = "input"):
-        self._agent = agent
-        self._options = options
-        self._prompt_key = prompt_key
+    def __init__(self, chain, options: dict = {}, prompt_key: str = "input"):
+        super().__init__(chain, options=options, prompt_key=prompt_key)
 
     @property
     def chain(self):
