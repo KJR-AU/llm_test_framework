@@ -1,6 +1,8 @@
 from trulens_eval import Feedback
-from trulens_eval.feedback.provider import OpenAI
+from trulens_eval.feedback.provider import OpenAI, LiteLLM
+
 provider = OpenAI()
+
 import numpy as np
 
 def ContextRelevance(context):
@@ -10,6 +12,9 @@ def ContextRelevance(context):
         .on(context)  # Refers to context defined from `select_context`
         .aggregate(np.mean)
     )
+
+print(vars(provider))
+
 
 Relevance = (
     Feedback(provider.relevance)
