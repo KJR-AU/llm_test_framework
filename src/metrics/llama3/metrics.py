@@ -53,3 +53,18 @@ Controversiality = (
         higher_is_better=False,
     ).on_output()
 )
+
+Coherence = (
+    Feedback(
+        provider.coherence,
+        name="Coherence"
+    ).on_output()
+)
+
+CoherenceWithCotReasons = (
+    Feedback(
+        provider.coherence_with_cot_reasons,
+        name="Coherence with cot reasons"
+    ).on_output()
+)
+
