@@ -1,5 +1,5 @@
 from trulens_eval import Feedback
-from trulens_eval.feedback.provider import OpenAI, LiteLLM
+from trulens_eval.feedback.provider import LiteLLM
 
 provider = LiteLLM()
 provider.model_engine = "ollama/llama3"
