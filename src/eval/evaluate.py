@@ -3,6 +3,8 @@ from trulens_eval import TruChain, TruLlama, Tru
 from ..targets import Target, LangChainTarget, LlamaIndexTarget
 from ..prompts.PromptSet import PromptSet
 
+Tru.reset_database()
+
 class UnknownTargetException(Exception):
     pass
 
