@@ -1,0 +1,30 @@
+[
+    {
+        "input": "What is the name of the son?",
+        "expected_output": "Could you please provide more context or specify which son you are referring to? There are many sons in various stories, historical accounts, and contexts, so additional details would help me provide the correct "
+    },
+    {
+        "input": "Did she find the seal?",
+        "expected_output": "I don't have any specific information about who she is or what seal she might be looking for. Could you provide more context?"
+    },
+    {
+        "input": "Did the bat reach its destination",
+        "expected_output": "Without more context, it's challenging to determine what specific destination the bat might have been aiming for. Bats are known for their ability to navigate long distances using echolocation and other sensory cues, often returning to roosting sites or foraging areas with precision.\r\n\r\nIf you're referring to a specific bat or situation, providing more details would help me better understand and provide a more accurate response."
+    },
+    {
+        "input": "Did he like the fair?",
+        "expected_output": "Without more context, it's hard to say who he is or which fair you're referring to. Fairs can vary widely in their attractions and activities, so whether someone likes a fair would depend on their personal preferences and experiences there. Some people enjoy the games, rides, and food, while others might find them less appealing."
+    },
+    {
+        "input": "Where is the park?",
+        "expected_output": "This question capitalizes on the ambiguity of the word park, which could refer to various types of parks. Without further context, it's unclear whether the speaker is referring to a recreational park with green spaces and amenities, an amusement park with rides and attractions, or another type of park altogether. This ambiguity could lead to confusion in communication, highlighting the challenge of interpreting language without sufficient context."
+    },
+    {
+        "input": "Describe that fine specimen to me",
+        "expected_output": "Could you provide more context or specify what fine specimen you're referring to? Without more information, I'm not sure which specimen you're asking about"
+    },
+    {
+        "input": "The hunter could not bear it.",
+        "expected_output": null
+    }
+]
