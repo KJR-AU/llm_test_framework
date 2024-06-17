@@ -6,11 +6,8 @@ from typing import List
 from .UnknownTargetException import UnknownTargetException
 
 
-def evaluate(self, target: Target, prompts: PromptSet, feedbacks: List[Feedback], 
+def evaluate(target: Target, prompts: PromptSet, feedbacks: List[Feedback], 
                     app_id: str | None = None, reset_database: bool = True):
-        
-    if reset_database:
-        self.reset_database()
 
     if app_id is None:
         app_id = uuid.uuid4().hex
@@ -26,10 +23,10 @@ def evaluate(self, target: Target, prompts: PromptSet, feedbacks: List[Feedback]
         LlamaIndexTarget: TruLlama
     }
     recorder_class = recorders.get(type(target))
-    recorder = recorder_class(target.chain, app_id=app_id, feedbacks=self.feedbacks)
+    recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks)
 
     with recorder as recording:
-        for prompt in self.prompts:
+        for prompt in prompts:
             response = target.invoke(prompt.input)
 
     tru.run_dashboard()
