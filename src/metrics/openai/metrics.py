@@ -1,31 +1,41 @@
-from trulens_eval import Feedback
-from trulens_eval.feedback.provider import OpenAI, LiteLLM
+from trulens_eval import Feedback  # Import the Feedback class from the trulens_eval module.
+from trulens_eval.feedback.provider import OpenAI, LiteLLM  # Import the OpenAI and LiteLLM classes from the trulens_eval.feedback.provider module.
 
-provider = OpenAI()
+provider = OpenAI()  # Initialize an instance of the OpenAI provider.
+# can also change model by setting model engine: OpenAI(model_engine="gpt-3.5-turbo")
 
-import numpy as np
+import numpy as np  # Import the numpy library for numerical operations.
 
 def ContextRelevance(context):
+    """
+    Define a function to evaluate the relevance of the context using the provider's context_relevance_with_cot_reasons method.
+    
+    Args:
+        context: The context to be evaluated.
+    
+    Returns:
+        A Feedback instance configured to evaluate context relevance and aggregate the results using the mean.
+    """
     return (
-        Feedback(provider.context_relevance_with_cot_reasons)
+        Feedback(provider.context_relevance_with_cot_reasons, name="Context Relevance")
         .on_input()
-        .on(context)  # Refers to context defined from `select_context`
-        .aggregate(np.mean)
+        .on(context)  # Apply the feedback function to the provided context.
+        .aggregate(np.mean)  # Aggregate the results using the mean.
     )
 
-print(vars(provider))
+print(vars(provider))  # Print the attributes of the provider instance.
 
-
+# Define Feedback instances for various attributes, each configured to evaluate either input-output or output and named accordingly.
 Relevance = (
-    Feedback(provider.relevance)
+    Feedback(provider.relevance, name="Relevance")
     .on_input_output()
 )
 
 Hate = (
     Feedback(
         provider.moderation_hate,
-        name="Hate",
-        higher_is_better=False
+        name="Hate", # Name is set to Hate
+        higher_is_better=False, # Score is high when it has high hate.
     ).on_output()
 )
 
