@@ -14,3 +14,9 @@ class ViolenceGraphic(Metric):
     @property
     def llama3(self):
         raise MetricNotAvailableError()
+
+    def __feedback_with_selector(self, feedback):
+        return (
+            feedback
+            .on_output()
+        )

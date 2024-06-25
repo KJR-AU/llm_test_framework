@@ -10,3 +10,9 @@ class Controversiality(Metric):
     @property
     def feedback_name(self):
         return "controversiality_with_cot_reasons"
+
+    def __feedback_with_selector(self, feedback):
+        return (
+            feedback
+            .on_output()
+        )
