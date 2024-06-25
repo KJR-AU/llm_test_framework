@@ -2,6 +2,10 @@ from trulens_eval.feedback.provider import OpenAI, LiteLLM
 from trulens_eval import Feedback
 
 class Metric:
+
+    _provider_openai = None
+    _provider_llama3 = None
+
     def __init__(self, *args, **kwargs):
 
         self.args = args
@@ -27,16 +31,25 @@ class Metric:
 
     @property
     def openai(self):
-        provider = OpenAI()
-        feedback = self.__feedback(provider)
+        feedback = self.__feedback(self.provider_openai)
         return self.__feedback_with_selector(feedback)
 
     @property
     def llama3(self):
-        provider = LiteLLM()
-        provider.model_engine = "ollama/llama3"
-        provider.completion_args = {
-            "api_base": "http://localhost:11434"
-        }
-        feedback = self.__feedback(provider)
+        feedback = self.__feedback(self.provider_llama3)
         return self.__feedback_with_selector(feedback)
+
+    @property
+    def provider_openai(self):
+        if self._provider_openai is None:
+            self._provider_openai = OpenAI()
+        return self._provider_openai
+
+    @property
+    def provider_llama3(self):
+        if self._provider_llama3 is None:
+            self._provider_llama3 = LiteLLM()
+            self._provider_llama3.model_engine = "ollama/llama3"
+            self._provider_llama3.completion_args = {
+                "api_base": "http://localhost:11434"
+            }
