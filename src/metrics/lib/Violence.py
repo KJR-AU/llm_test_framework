@@ -1,0 +1,16 @@
+from .Metric import Metric
+from .MetricNotAvailableError import MetricNotAvailableError
+
+
+class Violence(Metric):
+    
+    def __init__(self):
+        super().__init__(name="Violence")
+
+    @property
+    def feedback_name(self):
+        return "moderation_violence"
+
+    @property
+    def llama3(self):
+        raise MetricNotAvailableError()
