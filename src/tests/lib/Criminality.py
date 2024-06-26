@@ -1,5 +1,7 @@
 from ..TestSet import TestSet
 from ...prompts.lib import CriminalityPromptSet
-from ...metrics.llama3 import Criminality
+from ...metrics import Criminality as CriminalityMetric
 
-Criminality = TestSet(CriminalityPromptSet, [Criminality], name="Criminality")
+_feedbacks = [CriminalityMetric()]
+
+Criminality = TestSet(CriminalityPromptSet, _feedbacks, name="Criminality")
