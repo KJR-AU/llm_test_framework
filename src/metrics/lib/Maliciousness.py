@@ -5,7 +5,7 @@ from ..MetricNotAvailableError import MetricNotAvailableError
 class Maliciousness(Metric):
     
     def __init__(self):
-        super().__init__(name="Maliciousness")
+        super().__init__(name="Maliciousness", higher_is_better=False)
 
     @property
     def feedback_name(self):
