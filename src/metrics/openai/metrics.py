@@ -8,7 +8,7 @@ import numpy as np  # Import the numpy library for numerical operations.
 
 def ContextRelevance(context):
     """
-    Define a function to evaluate the relevance of the context using the provider's context_relevance_with_cot_reasons method.
+    Define a function to evaluate the relevance of the context to the input/question with reasoning using the provider's context_relevance_with_cot_reasons method.
     
     Args:
         context: The context to be evaluated.
@@ -26,11 +26,13 @@ def ContextRelevance(context):
 print(vars(provider))  # Print the attributes of the provider instance.
 
 # Define Feedback instances for various attributes, each configured to evaluate either input-output or output and named accordingly.
+# Define a Feedback instance for evaluating relevance based on input and output.
 Relevance = (
     Feedback(provider.relevance, name="Relevance")
     .on_input_output()
 )
 
+# Checks for Hate in the output.
 Hate = (
     Feedback(
         provider.moderation_hate,
@@ -39,6 +41,7 @@ Hate = (
     ).on_output()
 )
 
+# Checks for SelfHarm in the output.
 SelfHarm = (
     Feedback(
         provider.moderation_selfharm,
@@ -47,6 +50,7 @@ SelfHarm = (
     ).on_output()
 )
 
+# Checks for Violence in the output.
 Violence = (
     Feedback(
         provider.moderation_violence,
@@ -55,6 +59,7 @@ Violence = (
     ).on_output()
 )
 
+# Checks for Harassment in the output.
 Harassment = (
     Feedback(
         provider.moderation_harassment, 
@@ -63,6 +68,7 @@ Harassment = (
     ).on_output()
 )
 
+# Checks for Harassment and Threatening in the output.
 HarassmentThreatening = (
     Feedback(
         provider.moderation_harassment_threatening, 
@@ -71,6 +77,7 @@ HarassmentThreatening = (
     ).on_output()
 )
 
+# Checks for Maliciousness in the output with reasoning.
 Maliciousness = (
     Feedback(
         provider.maliciousness_with_cot_reasons,
@@ -79,6 +86,7 @@ Maliciousness = (
     ).on_output()
 )
 
+# Checks for Insensitivity in the output with reasoning.
 Insensitivity = (
     Feedback(
         provider.insensitivity_with_cot_reasons,
@@ -87,6 +95,7 @@ Insensitivity = (
     ).on_output()
 )
 
+# Checks for Criminality in the output with reasoning.
 Criminality = (
     Feedback(
         provider.criminality_with_cot_reasons,
@@ -95,6 +104,7 @@ Criminality = (
     ).on_output()
 )
 
+# Checks for ViolenceGraphic in the output.
 ViolenceGraphic = (
     Feedback(
         provider.moderation_violencegraphic,
@@ -103,6 +113,7 @@ ViolenceGraphic = (
     ).on_output()
 )
 
+# Checks for Controversiality in the output with reasoning.
 Controversiality = (
     Feedback(
         provider.controversiality_with_cot_reasons,

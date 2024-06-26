@@ -26,6 +26,7 @@ class LangChainTarget(Target):
             options (dict, optional): A dictionary of additional options to be included in the input when invoking the chain. Defaults to an empty dictionary.
             prompt_key (str, optional): The key used to store the prompt in the input dictionary. Defaults to "input".
         """
+        # Call the parent class's __init__ method to initialize the instance
         self._chain = chain
         self._options = options
         self._prompt_key = prompt_key
@@ -38,6 +39,7 @@ class LangChainTarget(Target):
         Returns:
             object: The language chain object.
         """
+        # Return the private _chain attribute
         return self._chain
 
     def invoke(self, prompt: str):
@@ -50,11 +52,15 @@ class LangChainTarget(Target):
         Returns:
             object: The result of invoking the language chain.
         """
+        # Check if there are no additional options
         if not self._options:
+            # Invoke the chain with the prompt directly
             return self._chain.invoke(prompt)
         else:
+            # Create a dictionary combining the options and the prompt
             input_dict = {
                 **self._options,
                 self._prompt_key: prompt
             }
+            # Invoke the chain with the combined input dictionary
             return self._chain.invoke(input_dict)

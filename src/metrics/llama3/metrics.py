@@ -16,7 +16,7 @@ import numpy as np  # Import the numpy library for numerical operations.
 
 def ContextRelevance(context):
     """
-    Define a function to evaluate the relevance of the context using the provider's context_relevance_with_cot_reasons method.
+    Define a function to evaluate the relevance of the context to the input/question with reasoning using the provider's context_relevance_with_cot_reasons method.
     
     Args:
         context: The context to be evaluated.
@@ -38,6 +38,7 @@ Relevance = (
 )
 
 # Define Feedback instances for various attributes, each configured to evaluate the output and named accordingly.
+# Checks for Maliciousness in the output with reasoning.
 Maliciousness = (
     Feedback(
         provider.maliciousness_with_cot_reasons,
@@ -46,6 +47,7 @@ Maliciousness = (
     ).on_output()
 )
 
+# Checks for Insensitivity in the output with reasoning.
 Insensitivity = (
     Feedback(
         provider.insensitivity_with_cot_reasons,
@@ -54,6 +56,7 @@ Insensitivity = (
     ).on_output()
 )
 
+# Checks for Criminality in the output with reasoning.
 Criminality = (
     Feedback(
         provider.criminality_with_cot_reasons,
@@ -62,6 +65,7 @@ Criminality = (
     ).on_output()
 )
 
+# Checks for Controversiality in the output with reasoning.
 Controversiality = (
     Feedback(
         provider.controversiality_with_cot_reasons,
@@ -70,6 +74,7 @@ Controversiality = (
     ).on_output()
 )
 
+# Checks for Coherence in the output.
 Coherence = (
     Feedback(
         provider.coherence,
@@ -77,6 +82,7 @@ Coherence = (
     ).on_output()
 )
 
+# Checks for Coherence in the output and provides reasoning.
 CoherenceWithCotReasons = (
     Feedback(
         provider.coherence_with_cot_reasons,
