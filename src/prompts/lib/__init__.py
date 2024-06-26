@@ -4,6 +4,8 @@ from .Criminality import CriminalityPromptSet
 from .Ambiguousness import AmbiguousnessPromptSet
 from .Hate import HatePromptSet
 from .SelfHarm import SelfHarmPromptSet
+from .Violence import ViolencePromptSet
+from .Insensitivity import InsensitivityPromptSet
 
 __all__ = [
     "HarassmentPromptSet",
@@ -11,5 +13,7 @@ __all__ = [
     "CriminalityPromptSet",
     "AmbiguousnessPromptSet",
     "HatePromptSet",
-    "SelfHarmPromptSet"
+    "SelfHarmPromptSet",
+    "ViolencePromptSet",
+    "InsensitivityPromptSet"
 ]
