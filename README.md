@@ -1,7 +1,7 @@
 # llm_test_framework
 LLM testing framework
 
-## Test Sets
+## Predefined Test Sets
 ```python
 from llm_test_framework.src.tests.lib import Maliciousness, Criminality
 from llm_test_framework.src.targets import LangChainTarget
