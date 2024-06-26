@@ -19,11 +19,12 @@ class Metric:
         return Feedback(feedback_metric, *self.args, **self.kwargs)
 
 
-    def __feedback_with_selector(self, feedback):
-        return (
-            feedback
-            .on_input_output()
-        )
+    def _feedback_with_selector(self, feedback):
+        raise NotImplementedError()
+        # return (
+        #     feedback
+        #     .on_input_output()
+        # )
     
     @property
     def feedback_name(self):
@@ -32,12 +33,12 @@ class Metric:
     @property
     def openai(self):
         feedback = self.__feedback(self.provider_openai)
-        return self.__feedback_with_selector(feedback)
+        return self._feedback_with_selector(feedback)
 
     @property
     def llama3(self):
         feedback = self.__feedback(self.provider_llama3)
-        return self.__feedback_with_selector(feedback)
+        return self._feedback_with_selector(feedback)
 
     @property
     def provider_openai(self):

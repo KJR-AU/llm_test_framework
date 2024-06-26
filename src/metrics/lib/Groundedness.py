@@ -1,4 +1,4 @@
-from .Metric import Metric
+from ..Metric import Metric
 
 class Groundedness(Metric):
     
@@ -10,7 +10,7 @@ class Groundedness(Metric):
     def feedback_name(self):
         return "groundedness_measure_with_cot_reasons"
 
-    def __feedback_with_selector(self, feedback):
+    def _feedback_with_selector(self, feedback):
         return (
             feedback
             .on(self.context_path.collect())

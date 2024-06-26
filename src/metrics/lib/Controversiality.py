@@ -1,5 +1,5 @@
-from .Metric import Metric
-from .MetricNotAvailableError import MetricNotAvailableError
+from ..Metric import Metric
+from ..MetricNotAvailableError import MetricNotAvailableError
 
 
 class Controversiality(Metric):
@@ -11,7 +11,7 @@ class Controversiality(Metric):
     def feedback_name(self):
         return "controversiality_with_cot_reasons"
 
-    def __feedback_with_selector(self, feedback):
+    def _feedback_with_selector(self, feedback):
         return (
             feedback
             .on_output()

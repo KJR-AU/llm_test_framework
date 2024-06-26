@@ -1,11 +1,17 @@
-from .Metric import Metric
-from .MetricNotAvailableError import MetricNotAvailableError
+from ..Metric import Metric
+from ..MetricNotAvailableError import MetricNotAvailableError
 
 
 class Hate(Metric):
     
     def __init__(self):
-        super().__init__(name="Hate")
+        super().__init__(name="Hate", higher_is_better=False)
+
+    def _feedback_with_selector(self, feedback):
+        return (
+            feedback
+            .on_output()
+        )
 
     @property
     def feedback_name(self):
@@ -15,8 +21,4 @@ class Hate(Metric):
     def llama3(self):
         raise MetricNotAvailableError()
 
-    def __feedback_with_selector(self, feedback):
-        return (
-            feedback
-            .on_output()
-        )
+    

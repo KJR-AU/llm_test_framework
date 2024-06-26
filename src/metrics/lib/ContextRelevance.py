@@ -1,4 +1,4 @@
-from .Metric import Metric
+from ..Metric import Metric
 import numpy as np
 
 class ContextRelevance(Metric):
@@ -12,7 +12,7 @@ class ContextRelevance(Metric):
     def feedback_name(self):
         return "context_relevance_with_cot_reasons"
 
-    def __feedback_with_selector(self, feedback):
+    def _feedback_with_selector(self, feedback):
         return (
             feedback
             .on(self.query_path)
