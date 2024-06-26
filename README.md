@@ -1,6 +1,23 @@
 # llm_test_framework
 LLM testing framework
 
+## Setup
+Follow these instructions to prepare your environment to run the code examples.
+1. Pip install the framework with
+```
+pip install git+https://github.com/KJR-AU/llm_test_framework
+```
+
+2. Replace the the following lines to import your own RAG application.
+
+```python
+from LLMTesting.lang_chain.lang_chain import rag_chain
+...
+context = app.set_context(rag_chain)
+...
+target: Target = LangChainTarget(rag_chain)
+```
+
 ## Predefined Test Sets
 ```python
 from llm_test_framework.src.tests.lib import Maliciousness, Criminality
@@ -8,7 +25,9 @@ from llm_test_framework.src.targets import LangChainTarget
 from llm_test_framework.src.app import App
 from llm_test_framework.src.tests import TestSet
 from llm_test_framework.src.targets import Target
+
 from LLMTesting.lang_chain.lang_chain import rag_chain
+
 from typing import List
 
 # Set up the test application
