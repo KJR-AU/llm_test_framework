@@ -33,12 +33,12 @@ setup(
     author='Joe Burton',
     author_email='joe.burton@kjr.com.au',
     packages=[
-        'llm_test_framework', 
-        'llm_test_framework.src.app',
-        'llm_test_framework.src.metrics',
-        'llm_test_framework.src.prompts',
-        'llm_test_framework.src.targets',
-        'llm_test_framework.src.tests'
+        'src', 
+        'src.app',
+        'src.metrics',
+        'src.prompts',
+        'src.targets',
+        'src.tests'
         
     ],
     install_requires=load_requirements(),
