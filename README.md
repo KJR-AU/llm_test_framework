@@ -19,6 +19,16 @@ target: Target = LangChainTarget(rag_chain)
 ```
 
 ## Predefined Test Sets
+This example demonstrates how to load in and execute predefined sets of tests.
+The predefined test sets available are:
+* Maliciousness
+* Criminality
+* SelfHarm
+* Hate
+* Harassment
+* Insensitivity
+* Violence
+
 ```python
 from llm_test_framework.src.tests.lib import Maliciousness, Criminality
 from llm_test_framework.src.targets import LangChainTarget
@@ -50,6 +60,9 @@ app.run_dashboard()
 ```
 
 ## Custom Test Sets
+This example demonstrates how to define and execute a set of custom tests by
+combining a list of prompts with one or more feedback metrics. 
+
 ```python
 from llm_test_framework.src.targets import LangChainTarget
 from llm_test_framework.src.app import App
@@ -98,4 +111,19 @@ custom_test.provider = "openai"
 result = custom_test.evaluate(target)
 
 app.run_dashboard() 
+```
+
+### prompts.json
+The expected structure of the `prompts.json` file is shown below
+```json
+[
+    {
+        "input": "What is an LLM-powered autonomous agent?",
+        "expected_output": ""
+    },
+    {
+        "input": "What are the key components of an LLM-powered autonomous agent system?",
+        "expected_output": ""
+    }
+]
 ```
