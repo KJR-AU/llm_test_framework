@@ -1,14 +1,49 @@
 # llm_test_framework
 LLM testing framework
 
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+- [Prompts](#prompts)
+- [Predefined Test Sets](#predefined-test-sets)
+- [Custom Test Sets](#custom-test-sets)
+
+## About
+
+The LLM Test Framework is designed to facilitate the testing and evaluation of large language models (LLMs). It provides a structured approach to benchmarking and validating the performance of LLMs across various tasks and datasets.
+
+## Features
+
+- **Comprehensive Benchmarking**: Evaluate LLMs on a wide range of tasks.
+- **Customizable Test Suites**: Easily create and run custom test suites.
+- **Performance Metrics**: Collect detailed performance metrics for analysis.
+- **Integration Support**: Seamlessly integrate with popular LLM frameworks.
+
 ## Setup
 Follow these instructions to prepare your environment to run the code examples.
-1. Pip install the framework with
+
+1. Open Git Bash or terminal.
+
+2. Navigate to the Parent directory of the RAG application's project to evaluate.
+Say the RAG application is define in a project called LLMTesting, navigate to LLMTesting's parent directory.
+
+3. Clone the repository
+```bash
+git clone https://github.com/KJR-AU/llm_test_framework.git
+```
+4. Pip install the framework with
 ```
 pip install git+https://github.com/KJR-AU/llm_test_framework
 ```
 
-2. Replace the the following lines to import your own RAG application.
+5. Create a new python file for example, main.py
+
+This is how the directory will look like:
+![alt text](./docs/img/setup_directory.png)
+![alt text](./docs/img/setup_explorer_view.png)
+
+6. Copy and paste an example code below [Predined Test Sets](#predefined-test-sets), [Custom Test Sets](#custom-test-sets) and replace the the following lines to import your own RAG application.
 
 ```python
 from LLMTesting.lang_chain.lang_chain import rag_chain
@@ -28,6 +63,8 @@ The predefined test sets available are:
 * Harassment
 * Insensitivity
 * Violence
+
+For more details please read [quickstart - available test sets](./docs/quickstart.md#available-testset).
 
 ```python
 from llm_test_framework.src.tests.lib import Criminality
@@ -59,72 +96,26 @@ test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for 
 # Run the test dashboard to evaluate results
 app.run_dashboard() 
 ```
+For more details please read [quickstart test set](./docs/quickstart.md#testset).
 
 ## Custom Test Sets
 This example demonstrates how to define and execute a set of custom tests by
 combining a list of prompts with one or more feedback metrics. 
 
-```python
-from llm_test_framework.src.targets import LangChainTarget
-from llm_test_framework.src.app import App
-from llm_test_framework.src.tests import TestSet
-from llm_test_framework.src.targets import Target
-from llm_test_framework.src.prompts import PromptSet
-from trulens_eval import Feedback, Select
-from llm_test_framework.src.metrics import (
-    Groundedness, 
-    AnswerRelevance,
-    ContextRelevance,
-    Harassment,
-    Hate
-) 
-from LLMTesting.lang_chain.lang_chain import rag_chain
+For more details defining custom test set please read [quickstart custom test set](./docs/quickstart.md#custom-test-set).
 
-# Set up the test application
-app = App(app_name="llm-powered-autonomous-agents")
-context = app.set_context(rag_chain)
-app.reset_database()
+For more details preparing custom prompts please read [quickstart-prompt](./docs/quickstart.md#prompt-dataset).
 
-# Define the target of our tests
-target: Target = LangChainTarget(rag_chain)
-
-# Load our custom inputs
-prompts = PromptSet.from_json_file("inputs.json")
-
-# Import and instantiate feedback metrics
-query_path = Select.Record.app.first.steps__.context.first._get_relevant_documents.args.query
-context_path = Select.Record.app.first.steps__.context.first.get_relevant_documents.rets[:].page_content
-feedbacks = [
-    Groundedness(context_path),
-    ContextRelevance(query_path, context_path),
-    AnswerRelevance(),
-    Hate(),
-    Harassment()
-]
-
-# Define our test set
-custom_test = TestSet(prompts, feedbacks, name="llm-powered-autonomous-agents-groundedness")
-
-# Set the feedback provider, this can also be set on individual feedback objects
-custom_test.provider = "openai"
-
-# Evaluate our test set
-result = custom_test.evaluate(target)
-
-app.run_dashboard() 
+7. Execute the evaluatio in terminal/bash
+```bash
+# Change main.py to the [filename].py created at step 5.
+python .\main.py
 ```
 
-### prompts.json
-The expected structure of the `prompts.json` file is shown below
-```json
-[
-    {
-        "input": "What is an LLM-powered autonomous agent?",
-        "expected_output": ""
-    },
-    {
-        "input": "What are the key components of an LLM-powered autonomous agent system?",
-        "expected_output": ""
-    }
-]
-```
+8. Wait for the dashboard to run.
+
+9. open the url and the dashboard will open in a web browser.
+
+10. Now the evaluation result and traces can be viewed.
+
+For more details of usage please read [quickstart.md](./docs/quickstart.md).

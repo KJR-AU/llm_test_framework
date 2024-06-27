@@ -1,3 +1,7 @@
+"""
+This setup.py file is used to define and configure a Python package for distribution using setuptools.
+"""
+
 from setuptools import setup, find_packages
 import os
 import re
@@ -5,10 +9,17 @@ import re
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
 def load_long_description():
+    """
+    Reads and returns the content of the README.md file for the package's long description.
+    """
     with open(os.path.join(this_directory, 'README.md')) as f:
         return f.read()
 
 def load_version():
+    """
+    Extracts and returns the version number from the __version__.py file.
+    Raises a ValueError if the version number is not found.
+    """
     version_path = os.path.join(
         this_directory, "__version__.py"
     )
@@ -20,9 +31,25 @@ def load_version():
         return match.group(1)
 
 def load_requirements():
+    """
+    Reads and returns the list of dependencies from the requirements.txt file.
+    """
     with open(os.path.join(this_directory, 'requirements.txt')) as f:
         return [line.strip() for line in f]
 
+"""
+Configuration:
+- name: The name of the package.
+- version: The version of the package, extracted from __version__.py.
+- description: A short description of the package.
+- long_description: A detailed description of the package, read from README.md.
+- long_description_content_type: Specifies the format of the long description (Markdown).
+- url: The URL of the package's repository.
+- author: The author of the package.
+- author_email: The email address of the author.
+- packages: A list of packages to include in the distribution.
+- install_requires: A list of dependencies required by the package, read from requirements.txt.
+"""
 setup(
     name='kjr_llm',
     version=load_version(),

@@ -7,13 +7,25 @@ from .UnknownTargetException import UnknownTargetException
 from ..metrics.Metric import Metric
 
 class TestSet:
+    """
+    A class representing a set of tests to evaluate a target using a collection of prompts and feedback metrics.
+    """
 
+    # List of supported feedback providers.
     SUPPORTED_PROVIDERS = [
         "openai",
         "llama3"
     ]
 
     def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", provider: str = None):
+        """
+        Initializes a new instance of the TestSet class.
+
+        :param prompts: The set of prompts to be evaluated.
+        :param feedbacks: The list of feedback metrics to be used for evaluation.
+        :param name: The name of the test set.
+        :param provider: The feedback provider to be used.
+        """
         self.prompts: PromptSet = prompts
         self.feedbacks: List[Feedback] = feedbacks
         self.name: str = name
@@ -22,6 +34,12 @@ class TestSet:
 
     def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False):
         """
+        Evaluates the target using the prompts and feedbacks defined in the test set.
+
+        :param target: The target to be evaluated.
+        :param app_id: The application ID for the evaluation.
+        :param reset_database: If True, resets the database before evaluation.
+        :return: The recording of the evaluation.
         """
         
         feedbacks = self._get_coerced_feedbacks()
@@ -39,16 +57,28 @@ class TestSet:
 
 
     def get_recorder(self, target: Target, feedbacks: List[Feedback], app_id: str | None = None):
+        """
+        Creates a recorder for the evaluation.
+
+        :param target: The target to be evaluated.
+        :param feedbacks: The list of feedback metrics to be used.
+        :param app_id: The application ID for the evaluation.
+        :return: A recorder instance.
+        """
         if app_id is None:
             app_id = uuid.uuid4().hex
         
+        # Check if the target is either a LangChainTarget or LlamaIndexTarget, otherwise raise an exception
         if not isinstance(target, (LangChainTarget, LlamaIndexTarget)):
             raise UnknownTargetException()
 
+        # Define a dictionary to map target types to their corresponding recorder classes
         recorders = {
             LangChainTarget: TruChain,
             LlamaIndexTarget: TruLlama
         }
+        
+        # Get the appropriate recorder class based on the type of the target
         recorder_class = recorders.get(type(target))
         recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
         return recorder
@@ -56,10 +86,18 @@ class TestSet:
     
     @property
     def provider(self):
+        """
+        The feedback provider used in the test set.
+        """
         return self._provider
 
     @provider.setter
     def provider(self, provider: str | None):
+        """
+        Sets the feedback provider.
+
+        :param provider: The feedback provider to be used.
+        """
         if provider not in [None, *self.SUPPORTED_PROVIDERS]:
             supported_provider_string: str = ", ".join(self.SUPPORTED_PROVIDERS)
             raise ValueError(f"unsupported provider: '{self.provider}'. Provider must be None or one of {supported_provider_string}")
