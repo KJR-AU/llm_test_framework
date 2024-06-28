@@ -53,6 +53,20 @@ context = app.set_context(rag_chain)
 target: Target = LangChainTarget(rag_chain)
 ```
 
+7. Execute the evaluatio in terminal/bash
+```bash
+# Change main.py to the [filename].py created at step 5.
+python .\main.py
+```
+
+8. Wait for the dashboard to run.
+
+9. open the url and the dashboard will open in a web browser.
+
+10. Now the evaluation result and traces can be viewed.
+
+For more details of usage please read [quickstart.md](./docs/quickstart.md).
+
 ## Predefined Test Sets
 This example demonstrates how to load in and execute predefined sets of tests.
 The predefined test sets available are:
@@ -105,17 +119,3 @@ combining a list of prompts with one or more feedback metrics.
 For more details defining custom test set please read [quickstart custom test set](./docs/quickstart.md#custom-test-set).
 
 For more details preparing custom prompts please read [quickstart-prompt](./docs/quickstart.md#prompt-dataset).
-
-7. Execute the evaluatio in terminal/bash
-```bash
-# Change main.py to the [filename].py created at step 5.
-python .\main.py
-```
-
-8. Wait for the dashboard to run.
-
-9. open the url and the dashboard will open in a web browser.
-
-10. Now the evaluation result and traces can be viewed.
-
-For more details of usage please read [quickstart.md](./docs/quickstart.md).
