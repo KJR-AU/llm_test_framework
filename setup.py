@@ -36,9 +36,13 @@ setup(
         'kjr_llm', 
         'kjr_llm.app',
         'kjr_llm.metrics',
+        'kjr_llm.metrics.lib',
         'kjr_llm.prompts',
+        'kjr_llm.prompts.lib',
+        'kjr_llm.prompts.lib.data',
         'kjr_llm.targets',
-        'kjr_llm.tests'
+        'kjr_llm.tests',
+        'kjr_llm.tests.lib'
         
     ],
     install_requires=load_requirements(),
