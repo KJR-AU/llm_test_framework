@@ -46,8 +46,8 @@ setup(
         
     ],
     install_requires=load_requirements(),
-    # package_data={
-    #     'datarwecdk': ['sagemaker/resources/*']
-    # },
-    # include_package_data=True
+    package_data={
+        'kjr_llm': ['prompts/lib/data/*']
+    },
+    include_package_data=True
 )
