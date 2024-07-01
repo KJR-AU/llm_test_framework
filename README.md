@@ -136,4 +136,4 @@ For more details defining custom test set please read [quickstart-custom test se
 
 For more details preparing custom prompts please read [quickstart-prompt](./docs/quickstart.md#prompt-dataset).
 
-How to add more predefined tests, please read [advanced-add predefined test sets](./docs/advanced.md#add-predefined-test-set).
+How to add more predefined tests, please read [advanced-add predefined test sets](./docs/quickstart.md#how-to-add-more-predefined-test-set).
