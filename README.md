@@ -26,7 +26,10 @@ Follow these instructions to prepare your environment to run the code examples.
 1. Open Git Bash or terminal.
 
 2. Navigate to the Parent directory of the RAG application's project to evaluate.
-Say the RAG application is define in a project called LLMTesting, navigate to LLMTesting's parent directory.
+Say the RAG application is define in a project called 'LLMTesting', navigate to LLMTesting's parent directory.
+
+Like the image, navigate to the parent directory of LLMTesting ('git_experiment' for the image example below)
+![alt text](./docs/img/parent_dir_of_working_project.png)
 
 3. Clone the repository
 ```bash
@@ -35,6 +38,19 @@ git clone https://github.com/KJR-AU/llm_test_framework.git
 4. Pip install the framework with
 ```
 pip install git+https://github.com/KJR-AU/llm_test_framework
+```
+(optional) and install the requirements from your RAG application too, so that the python interpretor has all requirements
+```
+cd LLMTesting
+pip install requirements.txt
+
+# when install is done to return to the parent directory (git_experiment) of LLMTesting and llm_test_framework.
+cd ..
+```
+
+(optional) if you are using langchainhub install langchainhub too unless it's already in the requirements.txt file.
+```
+pip install langchainhub
 ```
 
 5. Create a new python file for example, main.py
@@ -78,14 +94,14 @@ The predefined test sets available are:
 * Insensitivity
 * Violence
 
-For more details please read [quickstart - available test sets](./docs/quickstart.md#available-testset).
+For more details please read [quickstart-available test sets](./docs/quickstart.md#available-testset).
 
 ```python
-from llm_test_framework.src.tests.lib import Criminality
-from llm_test_framework.src.targets import LangChainTarget
-from llm_test_framework.src.app import App
-from llm_test_framework.src.tests import TestSet
-from llm_test_framework.src.targets import Target
+from llm_test_framework.kjr_llm.tests.lib import Criminality
+from llm_test_framework.kjr_llm.targets import LangChainTarget
+from llm_test_framework.kjr_llm.app import App
+from llm_test_framework.kjr_llm.tests import TestSet
+from llm_test_framework.kjr_llm.targets import Target
 
 from LLMTesting.lang_chain.lang_chain import rag_chain
 from typing import List
@@ -110,12 +126,14 @@ test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for 
 # Run the test dashboard to evaluate results
 app.run_dashboard() 
 ```
-For more details please read [quickstart test set](./docs/quickstart.md#testset).
+For more details please read [quickstart-test set](./docs/quickstart.md#testset).
 
 ## Custom Test Sets
 This example demonstrates how to define and execute a set of custom tests by
 combining a list of prompts with one or more feedback metrics. 
 
-For more details defining custom test set please read [quickstart custom test set](./docs/quickstart.md#custom-test-set).
+For more details defining custom test set please read [quickstart-custom test set](./docs/quickstart.md#custom-test-set).
 
 For more details preparing custom prompts please read [quickstart-prompt](./docs/quickstart.md#prompt-dataset).
+
+How to add more predefined tests, please read [advanced-add predefined test sets](./docs/advanced.md#add-predefined-test-set).

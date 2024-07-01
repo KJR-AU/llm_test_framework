@@ -14,7 +14,7 @@ This guide helps you to get started evaluating your RAG application.
 ## How to set RAG application
 To define the RAG application,
 ```python
-from llm_test_framework.src.app import App
+from llm_test_framework.kjr_llm.app import App
 from LLMTesting.lang_chain.lang_chain import rag_chain # import your rag application here this is example.
 
 # Set up the test application
@@ -30,7 +30,7 @@ app.reset_database()
 ```
 
 # Target
-[Target](.\..\src\targets\Target.py) class is used to instantiate the RAG application that is targeted to evaluate. Various llm framework is supported and they can be evaluated by setting the correct target which the RAG application to evaluate uses.
+[Target](.\..\kjr_llm\targets\Target.py) class is used to instantiate the RAG application that is targeted to evaluate. Various llm framework is supported and they can be evaluated by setting the correct target which the RAG application to evaluate uses.
 
 ## Supported LLM Framework:
 
@@ -44,13 +44,13 @@ app.reset_database()
 Set target:
 ```python
 # LangChainTarget
-from llm_test_framework.src.targets import LangChainTarget
+from llm_test_framework.kjr_llm.targets import LangChainTarget
 target: Target = LangChainTarget(rag_chain)
 ```
 or 
 ```python
 # LlamaIndexTarget
-from llm_test_framework.src.targets import LlamaIndexTarget
+from llm_test_framework.kjr_llm.targets import LlamaIndexTarget
 target: Target = LlamaIndexTarget(rag_chain)
 ```
 
@@ -63,6 +63,7 @@ List of overall feedback metrics available.
 
 | Feedback Metric | Description |
 |-----------------|-------------|
+| **AnswerRelevance** | Relevancy of the response to the question |
 | **ContextRelevance** | Relevancy of the context to the question |
 | **Relevance** | Relevancy of the RAG application response to the question |
 | **Maliciousness** | Check the maliciousness of the RAG Application response |
@@ -77,6 +78,7 @@ List of overall feedback metrics available.
 | **Hate** | Check the hate of the RAG Application response |
 | **SelfHarm** | Check the self harm of the RAG Application response |
 | **ViolenceGraphic** | Check the violence graphic of the RAG Application response |
+| **Groundedness** | Check the groundedness of the RAG Application response to the context |
 
 ## Feedback Provider
 Feedback provider is an LLM model that is used to evaluate the target RAG application. For instance, llama3 feedback provider can be used to evaluate an openai RAG application.
@@ -102,40 +104,62 @@ Criminality = TestSet(CriminalityPromptSet, [Criminality], name="Criminality")
 
 Set a provider when [defining a TestSet](#how-to-define-testset).
 ```python
-from llm_test_framework.src.tests.lib import Criminality
+from llm_test_framework.kjr_llm.tests.lib import Criminality
 Criminality = TestSet(CriminalityPromptSet, [Criminality], name="Criminality", provider='openai')
 ```
 OR define a provider after a [TestSet](#testset) has been defined with a metric.
 ```python
-from llm_test_framework.src.tests.lib import Criminality
+from llm_test_framework.kjr_llm.tests.lib import Criminality
 Criminality = TestSet(CriminalityPromptSet, [Criminality], name="Criminality")
 Criminlaity.provider = 'llama3'
 ```
 
 # TestSet
-[TestSet](../src/tests/TestSet.py) is a [list of prompts](#promptset) (PromptSet) combined with relevant feedback metric. It manage and evaluate a list of prompts against specific targets, and records the interactiona and feedback. It ensures that only recognized target types are used and provides flexibility in managing the evaluation process, including the option to reset the database and generate unique identifiers for different evaluations.
+[TestSet](../kjr_llm/tests/TestSet.py) is a [list of prompts](#promptset) (PromptSet) combined with relevant feedback metric. It manage and evaluate a list of prompts against specific targets, and records the interactiona and feedback. It ensures that only recognized target types are used and provides flexibility in managing the evaluation process, including the option to reset the database and generate unique identifiers for different evaluations.
 
 ### PromptSet
-[PromptSet](../src/prompts/PromptSet.py) is a list of [Prompt](#Prompt). PromptSet class has a static method `from_json_file` to read a local JSON file.
+[PromptSet](../kjr_llm/prompts/PromptSet.py) is a list of [Prompt](#Prompt). PromptSet class has a static method `from_json_file` to read a local JSON file.
 
 ### Prompt
-[Prompt](../src/prompts/Prompt.py) is a class for storing the input and expected output.
+[Prompt](../kjr_llm/prompts/Prompt.py) is a class for storing the input and expected output.
 
 
-### Available TestSet:
+### Predefined TestSet:
 
 | TestSet | Description | python file |
 |---------|-------------|-------------|
-| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminiality.py](./../src/tests/lib/Criminality.py) |
-| **Maliciousness** | TestSet that evaluates the maliciousness of the RAG application's responses to the list of Maliciousness related Prompt. | [Maliciousness.py](./../src/tests/lib/Maliciousness.py) |
-| **SelfHarm** | TestSet that evaluates the self harm of the RAG application's responses to the list of SelfHarm related Prompt. | [SelfHarm.py](./../src/tests/lib/SelfHarm.py) |
-| **Hate** | TestSet that evaluates the hatefulness of the RAG application's responses to the list of Hate related Prompt. | [Hate.py](./../src/tests/lib/Hate.py) |
-| **Harassment** | TestSet that evaluates the harassment of the RAG application's responses to the list of Harassment related Prompt. | [Harassment.py](./../src/tests/lib/Harassment.py) |
-| **Insensitivity** | TestSet that evaluates the insensitivity of the RAG application's responses to the list of Insensitivity related Prompt. | [Insensitivity.py](./../src/tests/lib/Insensitivity.py) |
-| **Violence** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../src/tests/lib/Violence.py) |
+| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminiality.py](./../kjr_llm/tests/lib/Criminality.py) |
+| **Maliciousness** | TestSet that evaluates the maliciousness of the RAG application's responses to the list of Maliciousness related Prompt. | [Maliciousness.py](./../kjr_llm/tests/lib/Maliciousness.py) |
+| **SelfHarm** | TestSet that evaluates the self harm of the RAG application's responses to the list of SelfHarm related Prompt. | [SelfHarm.py](./../kjr_llm/tests/lib/SelfHarm.py) |
+| **Hate** | TestSet that evaluates the hatefulness of the RAG application's responses to the list of Hate related Prompt. | [Hate.py](./../kjr_llm/tests/lib/Hate.py) |
+| **Harassment** | TestSet that evaluates the harassment of the RAG application's responses to the list of Harassment related Prompt. | [Harassment.py](./../kjr_llm/tests/lib/Harassment.py) |
+| **Insensitivity** | TestSet that evaluates the insensitivity of the RAG application's responses to the list of Insensitivity related Prompt. | [Insensitivity.py](./../kjr_llm/tests/lib/Insensitivity.py) |
+| **Violence** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/lib/Violence.py) |
+| **Groundedness** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/GroundednessTestSet.py) |
 
+### How to add more predefined test set:
+If you wish to use more predefined testset 
+```python
+# Import the Predefined Test Sets
+from llm_test_framework.src.tests.lib import Criminality, Hate, Insensitivity
+
+# Define and execute the tests
+tests: List[TestSet] = [
+    Criminality,
+    Hate,
+    Insensitivity
+]
+
+# Evaluate each Test Set.
+test_provider = "openai"
+for test in tests:
+    test.provider = test_provider
+test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for test in tests]
+
+```
 
 ### How to define Testset:
+If you create a TestSet you can follow the below code:
 ```python
 from ..TestSet import TestSet # import TestSet class
 from ...metrics.openai import Criminality # import your preferred feedback provider's feedback metric for evaluation
@@ -155,7 +179,7 @@ test_result = Criminality.evaluate(target, app_id=f"{app.app_name}-{Criminality.
 ```
 
 ## Prompt Dataset
-Prompt Data needs to be prepared as a JSON file and it needs to be in the local machine, for example "llm_test_framework\src\prompts\lib\data\ambiguousness.json". 
+Prompt Data needs to be prepared as a JSON file and it needs to be in the local machine, for example "llm_test_framework\kjr_llm\prompts\lib\data\ambiguousness.json". 
 Each object must have field name, "input" and "expected output". 
 - "input": An user message to the RAG application and it needs to be a string value.
 - "output": An expected response from the RAG application, which can be null. This value will be used to compare with the actual output/response of the RAG application.
@@ -185,13 +209,13 @@ Prepare a JSON file and save it in a folder where the new python file (eg. main.
 
 Set the RAG application to evaluate
 ```python
-from llm_test_framework.src.targets import LangChainTarget
-from llm_test_framework.src.app import App
-from llm_test_framework.src.tests import TestSet
-from llm_test_framework.src.targets import Target
-from llm_test_framework.src.prompts import PromptSet
+from llm_test_framework.kjr_llm.targets import LangChainTarget
+from llm_test_framework.kjr_llm.app import App
+from llm_test_framework.kjr_llm.tests import TestSet
+from llm_test_framework.kjr_llm.targets import Target
+from llm_test_framework.kjr_llm.prompts import PromptSet
 from trulens_eval import Feedback, Select
-from llm_test_framework.src.metrics import (
+from llm_test_framework.kjr_llm.metrics import (
     Groundedness, 
     AnswerRelevance,
     ContextRelevance,
