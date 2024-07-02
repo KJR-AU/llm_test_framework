@@ -60,17 +60,21 @@ setup(
     author='Joe Burton',
     author_email='joe.burton@kjr.com.au',
     packages=[
-        'src', 
-        'src.app',
-        'src.metrics',
-        'src.prompts',
-        'src.targets',
-        'src.tests'
+        'kjr_llm', 
+        'kjr_llm.app',
+        'kjr_llm.metrics',
+        'kjr_llm.metrics.lib',
+        'kjr_llm.prompts',
+        'kjr_llm.prompts.lib',
+        'kjr_llm.prompts.lib.data',
+        'kjr_llm.targets',
+        'kjr_llm.tests',
+        'kjr_llm.tests.lib'
         
     ],
     install_requires=load_requirements(),
-    # package_data={
-    #     'datarwecdk': ['sagemaker/resources/*']
-    # },
-    # include_package_data=True
+    package_data={
+        'kjr_llm': ['prompts/lib/data/*']
+    },
+    include_package_data=True
 )
