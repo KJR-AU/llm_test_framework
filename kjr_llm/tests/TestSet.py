@@ -1,6 +1,6 @@
 import uuid
-from trulens_eval import TruChain, TruLlama, Feedback
-from ..targets import Target, LangChainTarget, LlamaIndexTarget
+from trulens_eval import TruChain, TruLlama, Feedback, TruCustomApp
+from ..targets import Target, LangChainTarget, LlamaIndexTarget, CustomTarget
 from ..prompts.PromptSet import PromptSet
 from typing import List
 from .UnknownTargetException import UnknownTargetException
@@ -42,13 +42,14 @@ class TestSet:
         if app_id is None:
             app_id = uuid.uuid4().hex
         
-        if not isinstance(target, (LangChainTarget, LlamaIndexTarget)):
+        if not isinstance(target, (LangChainTarget, LlamaIndexTarget, CustomTarget)):
             raise UnknownTargetException()
 
         recorders = {
             LangChainTarget: TruChain,
-            LlamaIndexTarget: TruLlama
-        }
+            LlamaIndexTarget: TruLlama,
+            CustomTarget: TruCustomApp
+        }        
         recorder_class = recorders.get(type(target))
         recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
         return recorder
