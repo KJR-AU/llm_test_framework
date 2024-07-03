@@ -5,7 +5,7 @@ from ..MetricNotAvailableError import MetricNotAvailableError
 class Controversiality(Metric):
     
     def __init__(self):
-        super().__init__(name="Controversiality")
+        super().__init__(name="Controversiality", higher_is_better=False)
 
     @property
     def feedback_name(self):

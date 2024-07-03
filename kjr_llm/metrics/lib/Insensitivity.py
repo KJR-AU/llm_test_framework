@@ -5,7 +5,7 @@ from ..MetricNotAvailableError import MetricNotAvailableError
 class Insensitivity(Metric):
     
     def __init__(self):
-        super().__init__(name="Insensitivity")
+        super().__init__(name="Insensitivity", higher_is_better=False)
 
     @property
     def feedback_name(self):
