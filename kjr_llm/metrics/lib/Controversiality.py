@@ -9,8 +9,7 @@ class Controversiality(Metric):
     
     # Constructor method to initialize the Controversiality object.
     def __init__(self):
-        # Call the constructor of the parent Metric class with the name "Controversiality".
-        super().__init__(name="Controversiality")
+        super().__init__(name="Controversiality", higher_is_better=False)
 
     # Property method to return the name of the feedback metric.
     @property

@@ -102,3 +102,4 @@ class Metric:
             self._provider_llama3.completion_args = {
                 "api_base": "http://localhost:11434"
             }
+        return self._provider_llama3

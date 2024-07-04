@@ -9,8 +9,7 @@ class Insensitivity(Metric):
     
     # Constructor method to initialize the Insensitivity object.
     def __init__(self):
-        # Call the constructor of the parent Metric class with the name "Insensitivity".
-        super().__init__(name="Insensitivity")
+        super().__init__(name="Insensitivity", higher_is_better=False)
 
     # Property method to return the name of the feedback metric.
     @property
