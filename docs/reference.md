@@ -72,6 +72,17 @@ dict using the key defined with `prompt_key`.
 * prompt_key: str - used to set the prompt passed to the invoke method on a
 possible opts dictionary before the dict is passed to the underlying app. Only
 used if `options` is set.
+#### CustomTarget
+```python
+CustomTarget(app: any, options: dict = {}, prompt_key: str = "input")
+```
+* app: any - the custom application to be tested
+* options: dict<any, any> - a dictionary of options to be passed into application calls.
+If set, the prompt passed to the invoke method will be added to the options 
+dict using the key defined with `prompt_key`.
+* prompt_key: str - used to set the prompt passed to the invoke method on a
+possible opts dictionary before the dict is passed to the underlying app. Only
+used if `options` is set.
 #### Setting Targets
 LangChain
 
@@ -79,12 +90,16 @@ LangChain
 from llm_test_framework.kjr_llm.targets import LangChainTarget
 target: Target = LangChainTarget(rag_chain)
 ```
-or LlamaIndex
+LlamaIndex
 ```python
 from llm_test_framework.kjr_llm.targets import LlamaIndexTarget
 target: Target = LlamaIndexTarget(rag_chain)
 ```
-
+Custom
+```python
+from llm_test_framework.kjr_llm.targets import CustomTarget
+target: Target = CustomTarget(rag_chain)
+```
 # Metrics
 <sup>[Main Article](./metrics.md)</sup>
 
