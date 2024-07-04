@@ -14,7 +14,8 @@ class TestSet:
     # List of supported feedback providers.
     SUPPORTED_PROVIDERS = [
         "openai",
-        "llama3"
+        "llama3",
+        "deepseek"
     ]
 
     def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", provider: str = None):
