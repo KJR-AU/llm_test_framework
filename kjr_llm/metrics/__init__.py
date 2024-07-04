@@ -1,3 +1,4 @@
+# Importing various modules from the '.lib' package that are used to evaluate different aspects of content.
 from .lib.Groundedness import Groundedness
 from .lib.AnswerRelevance import AnswerRelevance
 from .lib.ContextRelevance import ContextRelevance
