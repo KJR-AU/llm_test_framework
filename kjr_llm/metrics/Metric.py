@@ -82,9 +82,9 @@ class Metric:
     @property
     def deepseek(self):
         """
-        Generates a feedback object using the LiteLLM (llama3) provider.
+        Generates a feedback object using the LiteLLM (deepseek) provider.
 
-        :return: A Feedback object with the LiteLLM (llama3) provider.
+        :return: A Feedback object with the LiteLLM (deepseek) provider.
         """
         feedback = self.__feedback(self.provider_deepseek)
         return self._feedback_with_selector(feedback)
@@ -118,9 +118,9 @@ class Metric:
     @property
     def provider_deepseek(self):
         """
-        Gets or initializes the LiteLLM (llama3) provider.
+        Gets or initializes the LiteLLM (deepseek) provider.
 
-        :return: The LiteLLM (llama3) provider.
+        :return: The LiteLLM (deepseek) provider.
         """
         if self._provider_deepseek is None:
             self._provider_deepseek = LiteLLM()
