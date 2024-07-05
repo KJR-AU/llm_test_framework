@@ -1,11 +1,20 @@
-from llm_test_framework.kjr_llm.metrics import Metric
+from ..Metric import Metric
+from ...prompts import PromptSet
 from trulens_eval import Feedback
+from trulens_eval.feedback import GroundTruthAgreement as GTA
 from typing import List
 
 class GroundTruthAgreement(Metric):
     
-    def __init__(self, golden_set: List[dict], *args, agreement_measure = "", **kwargs) -> None:
+    def __init__(self, golden_set: List[dict] | PromptSet, *args, agreement_measure = "agreement_measure", **kwargs) -> None:
         super().__init__(*args, **kwargs)
+
+        if isinstance(golden_set, PromptSet):
+            golden_set = golden_set.as_golden_set()
+
+        # Will raise exception if prompts are invalid
+        self._validate_prompts(golden_set)
+
         self.golden_set = golden_set
         self.agreement_measure = agreement_measure
 
@@ -15,9 +24,15 @@ class GroundTruthAgreement(Metric):
 
     @property
     def ground_truth_agreement(self):
-        return GroundTruthAgreement(self.golden_set)
+        return GTA(self.golden_set)
 
-    def __feedback(self, provider):
+    def _validate_prompts(self, prompts: List[dict]):
+        for prompt in prompts:
+            if not (prompt.get("query") and prompt.get("response")):
+                print(prompt)
+                raise ValueError("All prompts in a ground truth prompt set must have 'query' and 'response'")
+
+    def _feedback(self):
         """
         Generates a feedback object using the specified provider.
 
