@@ -27,7 +27,7 @@ class Metric:
         self._feedback = None
         self._feedback_fn = None
 
-    def __feedback(self, provider):
+    def _feedback(self, provider):
         """
         Generates a feedback object using the specified provider.
 
