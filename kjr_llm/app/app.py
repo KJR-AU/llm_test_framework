@@ -3,7 +3,7 @@ from trulens_eval.app import App as trulens_app  # Import the App class from the
 import uuid  # Import the uuid module for generating unique identifiers.
 
 class App:
-    def __init__(self, app_name: str | None = None):
+    def __init__(self, app_name: str | None = None, context = None, reset_database: bool = False):
         """
         Initialize the App instance.
         
@@ -11,6 +11,10 @@ class App:
             app_name (str | None): The name of the application. If not provided, a unique identifier will be generated.
         """
         self.tru = Tru()  # Create an instance of the Tru class.
+        if reset_database:
+            self.reset_database()
+        if context:
+            self.set_context(context)
         self.app_name = app_name if app_name else uuid.uuid4().hex  # Set the application name, generating a unique identifier if none is provided.
 
     def reset_database(self):
