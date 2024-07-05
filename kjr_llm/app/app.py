@@ -1,6 +1,7 @@
 from trulens_eval import Tru  # Import the Tru class from the trulens_eval module.
 from trulens_eval.app import App as trulens_app  # Import the App class from the trulens_eval.app module and alias it as trulens_app.
 import uuid  # Import the uuid module for generating unique identifiers.
+import pandas as pd
 
 class App:
     def __init__(self, app_name: str | None = None):
@@ -37,3 +38,67 @@ class App:
         """
         self.tru.run_dashboard()
 
+    def get_records_and_feedback(self, app_ids=[]):
+        """
+        Retrieve records and feedback for the specified application IDs.
+        
+        Args:
+            app_ids (list): A list of application IDs for which to retrieve records and feedback.
+        
+        Returns:
+            The records and feedback for the specified application IDs.
+        """
+        return self.tru.get_records_and_feedback(app_ids)
+
+    def stop_dashboard(self):
+        """
+        Stop the dashboard associated with the Tru instance.
+        """
+        self.tru.stop_dashboard()
+
+    def start_evaluator(self):
+        """
+        Start the evaluator associated with the Tru instance.
+        """
+        self.tru.start_evaluator()
+
+    def stop_evaluator(self):
+        """
+        Stop the evaluator associated with the Tru instance.
+        """
+        self.tru.stop_evaluator()
+
+    def get_leaderboard(self, app_ids=[]):
+        """
+        Retrieve the leaderboard for the specified application IDs.
+        
+        Args:
+            app_ids (list): A list of application IDs for which to retrieve the leaderboard.
+        
+        Returns:
+            The leaderboard for the specified application IDs.
+        """
+        return self.tru.get_leaderboard(app_ids)
+
+    def export_result_to_file(self, result = [], app_ids=[], filename=""):
+        # Wait for all feedback to finish
+        for test_result in result:
+            for item in test_result:
+                item.wait_for_feedback_results()
+
+        record, feedback = self.get_records_and_feedback(app_ids)
+        print("Finished evaluation")
+        
+        app_ids = record.app_id.unique()
+
+        export_filename = self.app_name if filename == "" else filename
+
+        with pd.ExcelWriter(f'{export_filename}.xlsx') as writer:
+            for id in app_ids:
+                id_record = record[record['app_id'] == id]
+                id_record.drop(columns=['app_json', 'type', 'record_id', 'record_json','cost_json', 'perf_json','total_tokens','total_cost'], inplace=True)
+                id_record.dropna(how='all', axis=1, inplace=True)
+                feedback = id.replace(f'{self.app_name}-','')
+                column_to_move = id_record.pop("ts")
+                id_record.insert(len(id_record.columns), "ts", column_to_move)
+                id_record.to_excel(writer, sheet_name=feedback)
