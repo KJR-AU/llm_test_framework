@@ -48,6 +48,14 @@ class Prompt:
         self._input = input
         self._expected_output = expected_output
 
+    def as_dict(self):
+        out = {
+            "input": self._input
+        }
+        if self.has_expected_output:
+            out['expected-output'] = self.expected_output
+        return out
+
     @property
     def input(self):
         """
