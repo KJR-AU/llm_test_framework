@@ -1,5 +1,7 @@
 # kjr_llm
-KJR's internal LLM-testing framework. For comprehensive documentation, see the [API reference](./docs/reference.md).
+KJR's internal LLM-testing framework. 
+
+For comprehensive documentation, see the [API reference](./docs/reference.md).
 
 ## Table of Contents
 - [About](#about)
