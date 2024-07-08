@@ -3,11 +3,18 @@ This guide helps you to get started evaluating your RAG application.
 
 ## Table of Contents
 - [App](#app)
-- [Target](#target)
+- [Targets](#target)
+    - [Supported Target Frameworks](#supported-target-frameworks)
 - [Metrics](#metrics)
-- [TestSet](#testset)
-- [Prompt Dataset](#prompt-dataset)
-- [Result Review](#result-review)
+- [Feedback Provider](#feedback-provider)
+    - [Supported Providers](#supported-providers)
+- [Prompt Sets](#prompt-sets)
+    - [Prompt Data Format](#prompt-data-format)
+    - [Predefined Prompt Sets](#predefined-prompt-sets)
+- [Test Sets](#test-sets)
+    - [Evaluating Applications](#evaluating-applications)
+    - [Predefined Test Sets](#predefined-test-sets)
+- [Review Results](#review-results)
 - [Other](#other)
 
 ## App
@@ -44,7 +51,7 @@ app.reset_database()
 ## Target
 A Target object wraps the target application to facilitate communication with multiple LLM application frameworks. 
 
-#### Supported LLM Frameworks:
+### Supported Target Frameworks:
 
 | Framework | Url |
 |---------------|-----|
@@ -127,7 +134,8 @@ For more details see [TruLens LLMProvider](https://www.trulens.org/trulens_eval/
 | **GroundTruthAgreement** | Scores the agreement between the ground truth and response. | openai, llama3 |
 
 ## Feedback Provider
-A feedback provider is a LLM that is used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
+<a name="feedback-provider"></a>
+A feedback provider is a LLM used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
 
 A provider must be specified for each metric used in a test set. This can be done by accessing a property of a `Metric` object or by setting a property on a `TestSet` object. A `TestSet` will use the `provider` property as a default if no provider has been specified for a `Metric`.
 
@@ -168,7 +176,7 @@ except MetricNotAvailableError:
     print("The Hate metric isn't supported by a llama3 provider")
 ```
 
-### Supported LLM Framework:
+### Supported Providers
 Multiple feedback providers is supported in this framework. 
 
 | Feedback Providers | Url |
@@ -190,7 +198,7 @@ for prompt in prompts:
     print(prompt.as_dict())
 ```
 
-### Prompt Dataset
+### Prompt Data Format
 Prompt data needs to be prepared in a local JSON file. It should contain a list of objects. Each object must have an input field and optionally an expected_output field. 
 - input: str - a message to be used as input to the application
 - expected_output: str (optional) - the expected response from the application
@@ -233,6 +241,7 @@ for prompt in Ambiguousness:
 ```
 
 ## Test Sets
+<a name="test-sets"></a>
 A test set combines a set of `prompts` with one or more feedback `metrics` and can be used to execute the resulting tests against a LLM-powered application and record the results. A `provider` can be set which will be used by `metrics` without an explicit provider.
 
 ```python
@@ -246,7 +255,7 @@ A TestSet provides an `evaluate` method to execute the contained tests on an app
 test_set.evaluate(target: Target, app_id: str | None = None, reset_database: bool = False)
 ```
 
-### Creating Test Sets
+#### Creating Test Sets
 
 ```python
 from kjr_llm.tests import TestSet
@@ -261,7 +270,7 @@ feedbacks = [
 test_set = TestSet(CriminalityPromptSet, feedbacks, app_id="example app", provider="openai")
 ```
 
-### Evaluating Targets
+#### Evaluating Targets
 Now that a test set has been created, it can be used to evaluate a target.
 ```python
 from kjr_llm.targets import Target, LangChainTarget
@@ -286,7 +295,7 @@ A library of test sets is available for consumption out of the box. The availabl
 | **Groundedness** | TestSet that evaluates the groundedess of the RAG application's responses to the list of Groundedness related Prompt. | [Groundedness.py](./../kjr_llm/tests/GroundednessTestSet.py) |
 | **GroundTruthAgreement** | TestSet that evaluates the ground truth agreement of the RAG application's responses to the list of GroundTruthAgreement related Prompt. | [GroundTruthPromptSet.py](./../kjr_llm/tests/GroundTruthPromptSet.py) |
 
-### Consuming Predefined Test Sets
+#### Consuming Predefined Test Sets
 The following example demonstrates how to consume predefined test sets.
 ```python
 from kjr_llm.tests.lib import Criminality
@@ -316,7 +325,8 @@ test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for 
 
 ```
 
-# Result Review
+# Review Results
+<a name="review-results"></a>
 TruLens framework is used to evaluate the RAG application. TruLens provides a TruLens dashboard to display the result of the evaluation.
 
 
