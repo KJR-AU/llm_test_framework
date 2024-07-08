@@ -1,34 +1,27 @@
-# Import the TestSet class from the TestSet module within the current package
 from .TestSet import TestSet
-
-# Import the Groundedness class from the metrics module within the parent package
 from ..metrics import GroundTruthAgreement
-
-# Import the PromptSet class from the prompts module within the parent package
 from ..prompts import PromptSet
 
-# Define a class named GroundTruthTestSet that inherits from TestSet
 class GroundTruthTestSet(TestSet):
-
     """
-    This class extends the `TestSet` class and integrates the `GroundTruthTestSet` metric
-    to evaluate the GroundTruthTestSet of responses based on provided prompts and golden set prompt.
+    This class extends the `TestSet` class and integrates the `GroundTruthAgreement` metric
+    to evaluate the GroundTruth of responses based on provided prompts and context.
     """
     
-    def __init__(self, prompts: PromptSet, golden_set, name: str | None = None, provider: str | None = None):
+    def __init__(self, prompts: PromptSet, name: str | None = None, agreement_measure: str = "agreement_measure"):
         """
-        Constructor method to initialize an instance of GroundTruthTestSet with the given prompts, golden set, and optional name and provider.
+        Constructor method to initialize an instance of GroundTruthTestSet with the given prompts, context path, and optional name and provider.
 
         Args:
             prompts (PromptSet): The set of prompts to be used for evaluation.
-            golden_set: The golden set data used for evaluating ground truth agreement.
             name (str | None, optional): The name of the test set. Defaults to None.
-            provider (str | None, optional): The provider of the test set. Defaults to None.
+            agreement_measure (str, optional): The name of the agreement measure
+                                        used by the ground truth agreement metric.
         """
-        # Create an instance of GroundTruthAgreement using the provided golden_set
-        feedback = GroundTruthAgreement(golden_set)
+        feedback = GroundTruthAgreement(prompts, agreement_measure=agreement_measure)
+        feedback_fn = feedback._feedback_with_selector(feedback._feedback())
         # Call the constructor of the parent class (TestSet) with the prompts, feedback, and optional name and provider
-        super().__init__(prompts, [feedback], name=name, provider=provider)
+        super().__init__(prompts, [feedback_fn], name=name, provider=None)
 
     @classmethod
     def from_file(cls, file_path, *args, **kwargs):
