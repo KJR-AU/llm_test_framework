@@ -131,18 +131,25 @@ A feedback provider is a LLM that is used to evaluate the target RAG application
 
 A provider must be specified for each metric used in a test set. This can be done by accessing a property of a `Metric` object or by setting a property on a `TestSet` object. A `TestSet` will use the `provider` property as a default if no provider has been specified for a `Metric`.
 
+A `Provider` enum is exposed in the `provider` module which can be used to 
+access supported providers.
+
 ```python
 from kjr_llm.metrics import Criminality, Hate
 from kjr_llm.tests import TestSet
+from kjr_llm.provider import Provider
 
 feedbacks = [
+    # The Criminality metric will default to the default provider specified
+    # on the test set, as no explicit provider has been set.
     Criminality,
     # The Hate metric is only supported by openai. Accessing Hate.llama3 will
     # raise a MetricNotAvailableError
     Hate.openai
 ]
 
-test = TestSet(some_prompts, feedbacks, provider="llama3")
+llama3_provider = Provider.llama3
+test = TestSet(some_prompts, feedbacks, provider=llama3_provider)
 
 # The Hate metric will use openai as a provider while the Criminality metric
 # will default to llama3 as defined on the TestSet.
