@@ -22,7 +22,7 @@ similarity with the ground truth data.
 Several agreement measures can be used to assess similarity with the ground
 truth data. For more details see the [Trulens documentation](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#ground-truth-agreement).
 
-* [agreement_measure](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#trulens_eval.feedback.groundtruth.GroundTruthAgreement.agreement_measure)
+* [agreement_measure](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#trulens_eval.feedback.groundtruth.GroundTruthAgreement.agreement_measure) (note: this measure uses an OpenAI GPT model)
 * [bert_score](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#trulens_eval.feedback.groundtruth.GroundTruthAgreement.bert_score)
 * [bleu](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#trulens_eval.feedback.groundtruth.GroundTruthAgreement.bleu)
 * [mae](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#trulens_eval.feedback.groundtruth.GroundTruthAgreement.mae)
