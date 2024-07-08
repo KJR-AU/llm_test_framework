@@ -14,9 +14,10 @@ This guide helps you to get started evaluating your RAG application.
 An application needs to be created to monitor any tests that are run.
 
 ```python
-App(target_app: any, app_name: str = None, reset_database: bool = True) -> App
+App(context: Any = None, app_name: str = None, reset_database: bool = True)
 ```
-* target_app: any - the application to be tested
+* context: any - the context to be set. This is generally the LLM application 
+being tested.
 * app_name: str - A name for the application. If not provided a uuid will be
 used.
 * reset_database: bool - if True, reset the local sqlite database used by 
