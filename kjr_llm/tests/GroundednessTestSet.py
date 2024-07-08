@@ -28,7 +28,7 @@ class GroundednessTestSet(TestSet):
         # Create an instance of Groundedness using the provided context_path
         feedback = Groundedness(context_path)
         # Call the constructor of the parent class (TestSet) with the prompts, feedback, and optional name and provider
-        super().__init__(prompts, [feedback], name=name, provider=provider)
+        super().__init__(prompts, [feedback], name=name, default_provider=provider)
 
     @classmethod
     def from_file(cls, file_path, *args, **kwargs):

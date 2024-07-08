@@ -21,7 +21,7 @@ class GroundTruthTestSet(TestSet):
         feedback = GroundTruthAgreement(prompts, agreement_measure=agreement_measure)
         feedback_fn = feedback._feedback_with_selector(feedback._feedback())
         # Call the constructor of the parent class (TestSet) with the prompts, feedback, and optional name and provider
-        super().__init__(prompts, [feedback_fn], name=name, provider=None)
+        super().__init__(prompts, [feedback_fn], name=name, default_provider=None)
 
     @classmethod
     def from_file(cls, file_path, *args, **kwargs):

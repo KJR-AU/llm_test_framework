@@ -17,7 +17,7 @@ class TestSet:
         "llama3"
     ]
 
-    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", provider: str = None):
+    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: str = None):
         """
         Initializes a new instance of the TestSet class.
 
@@ -29,7 +29,7 @@ class TestSet:
         self.prompts: PromptSet = prompts
         self.feedbacks: List[Feedback] = feedbacks
         self.name: str = name
-        self.provider = provider
+        self.provider = default_provider
             
     @classmethod
     def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
