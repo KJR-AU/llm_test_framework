@@ -157,7 +157,7 @@ feedbacks = [
 ]
 
 llama3_provider = Provider.llama3
-test = TestSet(some_prompts, feedbacks, provider=llama3_provider)
+test = TestSet(some_prompts, feedbacks, default_provider=llama3_provider)
 
 # The Hate metric will use openai as a provider while the Criminality metric
 # will default to llama3 as defined on the TestSet.
