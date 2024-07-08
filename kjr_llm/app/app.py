@@ -91,14 +91,17 @@ class App:
         
         app_ids = record.app_id.unique()
 
-        export_filename = self.app_name if filename == "" else filename
+        prepare_filename = self.app_name if filename == "" else filename
+        export_filename = "data" if prepare_filename == "" else prepare_filename
 
         with pd.ExcelWriter(f'{export_filename}.xlsx') as writer:
+            counter = 0
             for id in app_ids:
                 id_record = record[record['app_id'] == id]
                 id_record.drop(columns=['app_json', 'type', 'record_id', 'record_json','cost_json', 'perf_json','total_tokens','total_cost'], inplace=True)
                 id_record.dropna(how='all', axis=1, inplace=True)
                 feedback = id.replace(f'{self.app_name}-','')
+                sheetname = feedback if len(feedback) < 31 else 'sheet'+str(counter)
                 column_to_move = id_record.pop("ts")
                 id_record.insert(len(id_record.columns), "ts", column_to_move)
-                id_record.to_excel(writer, sheet_name=feedback)
+                id_record.to_excel(writer, sheet_name=sheetname)
