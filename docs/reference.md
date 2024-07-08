@@ -261,13 +261,14 @@ test_set.evaluate(target: Target, app_id: str | None = None, reset_database: boo
 from kjr_llm.tests import TestSet
 from kjr_llm.metrics import Criminality, Hate
 from kjr_llm.prompts.lib import CriminalityPromptSet
+from kjr_llm.provider import Provider
 
 feedbacks = [
     Criminality(),
     Hate()
 ]
 
-test_set = TestSet(CriminalityPromptSet, feedbacks, app_id="example app", provider="openai")
+test_set = TestSet(CriminalityPromptSet, feedbacks, app_id="example app", default_provider=Provider.OPENAI)
 ```
 
 #### Evaluating Targets
@@ -300,10 +301,11 @@ The following example demonstrates how to consume predefined test sets.
 ```python
 from kjr_llm.tests.lib import Criminality
 from kjr_llm.targets import LangChainTarget
+from kjr_llm.provider import Provider
 from your_app import your_chain
 
 target = LangChainTarget(your_chain)
-result = Criminality.evaluate(target, app_id="your_chain-criminality", provider="openai")
+result = Criminality.evaluate(target, app_id="your_chain-criminality", default_provider=Provider.OPENAI)
 ```
 Execute multiple predefined tests
 ```python
@@ -318,9 +320,9 @@ tests: List[TestSet] = [
 ]
 
 # Evaluate each Test Set.
-test_provider = "openai"
+test_provider = Provider.OPENAI
 for test in tests:
-    test.provider = test_provider
+    test.default_provider = test_provider
 test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for test in tests]
 
 ```

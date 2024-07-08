@@ -24,7 +24,7 @@ class TestSet:
         self.prompts: PromptSet = prompts
         self.feedbacks: List[Feedback] = feedbacks
         self.name: str = name
-        self.provider = default_provider
+        self.default_provider = default_provider
             
     @classmethod
     def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
@@ -83,14 +83,14 @@ class TestSet:
 
     
     @property
-    def provider(self):
+    def default_provider(self):
         """
         The feedback provider used in the test set.
         """
         return self._provider
 
-    @provider.setter
-    def provider(self, provider: str | None):
+    @default_provider.setter
+    def default_provider(self, provider: str | None):
         """
         Sets the feedback provider.
 
@@ -112,9 +112,9 @@ class TestSet:
             
             # Try to set the provider if no provider has been set
             if isinstance(feedback, Metric):
-                if self.provider is None:
+                if self.default_provider is None:
                     raise ValueError("provider cannot be determined")
-                coerced_feedback = getattr(feedback, self.provider)
+                coerced_feedback = getattr(feedback, self.default_provider)
             elif isinstance(feedback, Feedback):
                 coerced_feedback = feedback
             else:
