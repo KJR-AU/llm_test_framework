@@ -5,17 +5,12 @@ from ..prompts.PromptSet import PromptSet
 from typing import List
 from .UnknownTargetException import UnknownTargetException
 from ..metrics.Metric import Metric
+from ..provider import Provider
 
 class TestSet:
     """
     A class representing a set of tests to evaluate a target using a collection of prompts and feedback metrics.
     """
-
-    # List of supported feedback providers.
-    SUPPORTED_PROVIDERS = [
-        "openai",
-        "llama3"
-    ]
 
     def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: str = None):
         """
@@ -101,9 +96,9 @@ class TestSet:
 
         :param provider: The feedback provider to be used.
         """
-        if provider not in [None, *self.SUPPORTED_PROVIDERS]:
-            supported_provider_string: str = ", ".join(self.SUPPORTED_PROVIDERS)
-            raise ValueError(f"unsupported provider: '{self.provider}'. Provider must be None or one of {supported_provider_string}")
+        if provider is not None and not Provider.is_supported(provider):
+            supported_provider_string: str = ", ".join(Provider.all)
+            raise ValueError(f"unsupported provider: '{provider}'. Provider must be None or one of {supported_provider_string}")
         self._provider = provider
 
 
