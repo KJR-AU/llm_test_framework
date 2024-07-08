@@ -3,7 +3,9 @@ from ...prompts import PromptSet
 from trulens_eval import Feedback
 from trulens_eval.feedback import GroundTruthAgreement as GTA
 from typing import List
+from trulens_eval.feedback import GroundTruthAgreement as GTA
 
+# Define a class named GroundTruthAgreement that inherits from the Metric class.
 class GroundTruthAgreement(Metric):
     
     def __init__(self, golden_set: List[dict] | PromptSet, *args, agreement_measure = "agreement_measure", **kwargs) -> None:
@@ -16,12 +18,15 @@ class GroundTruthAgreement(Metric):
         self._validate_prompts(golden_set)
 
         self.golden_set = golden_set
-        self.agreement_measure = agreement_measure
+        # Store the name of the measure used to evaluate the agreement.
+        self.ground_truth_measure = agreement_measure
 
+    # Property method to return the name of the feedback metric.
     @property
     def feedback_name(self):
-        return "ground_truth_agreement"
+        return self.ground_truth_measure
 
+    # Property method to compute the agreement between the golden set and the predictions.
     @property
     def ground_truth_agreement(self):
         return GTA(self.golden_set)
@@ -39,7 +44,7 @@ class GroundTruthAgreement(Metric):
         :param provider: The feedback provider to use.
         :return: A Feedback object.
         """
-        agreement_measure = getattr(self.ground_truth_agreement, self.agreement_measure)
+        agreement_measure = getattr(self.ground_truth_agreement, self.feedback_name)
         return Feedback(agreement_measure, *self.args, **self.kwargs)
 
     def _feedback_with_selector(self, feedback):

@@ -123,6 +123,7 @@ For more details see [TruLens LLMProvider](https://www.trulens.org/trulens_eval/
 | **SelfHarm** | Scores the presence of self harm in the response, lower is better. | openai |
 | **ViolenceGraphic** | Scores the presence of graphic violence in the response, lower is better. | openai |
 | **Groundedness** | Used for RAG applications. Scores how grounded the response is in the context, i.e. not hallucinating. | openai, llama3 |
+| **GroundTruthAgreement** | Scores the agreement between the ground truth and response. | openai, llama3 |
 
 ## Feedback Provider
 A feedback provider is a LLM that is used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
@@ -267,14 +268,15 @@ A library of test sets is available for consumption out of the box. The availabl
 
 | TestSet | Description | python file |
 |---------|-------------|-------------|
-| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminiality.py](./../kjr_llm/tests/lib/Criminality.py) |
+| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminality.py](./../kjr_llm/tests/lib/Criminality.py) |
 | **Maliciousness** | TestSet that evaluates the maliciousness of the RAG application's responses to the list of Maliciousness related Prompt. | [Maliciousness.py](./../kjr_llm/tests/lib/Maliciousness.py) |
 | **SelfHarm** | TestSet that evaluates the self harm of the RAG application's responses to the list of SelfHarm related Prompt. | [SelfHarm.py](./../kjr_llm/tests/lib/SelfHarm.py) |
 | **Hate** | TestSet that evaluates the hatefulness of the RAG application's responses to the list of Hate related Prompt. | [Hate.py](./../kjr_llm/tests/lib/Hate.py) |
 | **Harassment** | TestSet that evaluates the harassment of the RAG application's responses to the list of Harassment related Prompt. | [Harassment.py](./../kjr_llm/tests/lib/Harassment.py) |
 | **Insensitivity** | TestSet that evaluates the insensitivity of the RAG application's responses to the list of Insensitivity related Prompt. | [Insensitivity.py](./../kjr_llm/tests/lib/Insensitivity.py) |
 | **Violence** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/lib/Violence.py) |
-| **Groundedness** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/GroundednessTestSet.py) |
+| **Groundedness** | TestSet that evaluates the groundedess of the RAG application's responses to the list of Groundedness related Prompt. | [Groundedness.py](./../kjr_llm/tests/GroundednessTestSet.py) |
+| **GroundTruthAgreement** | TestSet that evaluates the ground truth agreement of the RAG application's responses to the list of GroundTruthAgreement related Prompt. | [GroundTruthPromptSet.py](./../kjr_llm/tests/GroundTruthPromptSet.py) |
 
 ### Consuming Predefined Test Sets
 The following example demonstrates how to consume predefined test sets.
