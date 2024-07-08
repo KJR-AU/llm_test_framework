@@ -18,7 +18,6 @@ containing prompts and expected responses. Alternatively a *PromptSet* loaded
 from the same data can be provided. 
 * agreement_measure: *str* - The name of the agreement measure used to assess
 similarity with the ground truth data.
-### Loading directly from file
 ### Agreement Measures
 Several agreement measures can be used to assess similarity with the ground
 truth data. For more details see the [Trulens documentation](https://www.trulens.org/trulens_eval/evaluation/feedback_implementations/stock/#ground-truth-agreement).
