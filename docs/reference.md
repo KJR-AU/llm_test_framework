@@ -4,7 +4,7 @@ This guide helps you to get started evaluating your RAG application.
 ## Table of Contents
 - [App](#app)
 - [Target](#target)
-- [Feedback](#metrics)
+- [Metrics](#metrics)
 - [TestSet](#testset)
 - [Prompt Dataset](#prompt-dataset)
 - [Result Review](#result-review)
@@ -101,7 +101,7 @@ from llm_test_framework.kjr_llm.targets import CustomTarget
 target: Target = CustomTarget(rag_chain)
 ```
 # Metrics
-<sup>[Main Article](./metrics.md)</sup>
+<sup>[Main Article](./metrics/metrics.md)</sup>
 
 Metrics are individual feedback functions used to assess the performance of an LLM-powered application. They will generally use another LLM, known as the provider model, to score the performance of an application against a rubric in regard to a specific metric. Some feedback metrics may only be supported by a particular feedback provider. For a comprehensive list, see the table below.
 ## Available Metric
