@@ -49,7 +49,7 @@ app = App(context=your_chain,
 target: Target = LangChainTarget(your_chain)
 
 # Define and execute the tests
-Criminality.evaluate(target, app_id=f"{app.app_name}-{test.name}", provider="openai")
+Criminality.evaluate(target, app_id=f"{app.app_name}-{test.name}", default_provider="openai")
 
 # Run the test dashboard to evaluate results
 app.run_dashboard() 
