@@ -41,7 +41,7 @@ from kjr_llm.tests.lib import Criminality
 from your_app import your_chain
 
 # Set up the test application
-app = App(your_chain, 
+app = App(context=your_chain, 
             app_name="llm-powered-autonomous-agents", 
             reset_database=True)
 
