@@ -53,7 +53,7 @@ class Prompt:
             "input": self._input
         }
         if self.has_expected_output:
-            out['expected-output'] = self.expected_output
+            out['expected_output'] = self.expected_output
         return out
 
     @property
@@ -97,4 +97,4 @@ class Prompt:
         Returns:
             Prompt: A new instance of the Prompt class.
         """
-        return cls(json['input'], expected_output=json.get('expected-output'))
+        return cls(json['input'], expected_output=json.get('expected_output'))
