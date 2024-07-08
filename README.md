@@ -26,7 +26,7 @@ Install the framework by running
 ```
 pip install git+https://github.com/KJR-AU/llm_test_framework
 ```
-then import it with
+then import with
 ```python 
 import kjr_llm
 ```
