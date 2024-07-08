@@ -31,8 +31,13 @@ class TestSet:
         self.name: str = name
         self.provider = provider
             
+    @classmethod
+    def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
+        prompts = PromptSet.from_json_file(file_path)
+        return cls(prompts, *args, **kwargs)
 
-    def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False):
+
+    def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False, provider = None):
         """
         Evaluates the target using the prompts and feedbacks defined in the test set.
 
