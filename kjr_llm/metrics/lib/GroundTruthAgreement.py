@@ -50,3 +50,8 @@ class GroundTruthAgreement(Metric):
         :return: The feedback object with the selector applied.
         """
         return feedback.on_input_output()
+
+    @classmethod
+    def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
+        prompts = PromptSet.from_json_file(file_path)
+        return cls(prompts, *args, **kwargs)
