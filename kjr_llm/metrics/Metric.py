@@ -3,16 +3,14 @@ This module defines the `Metric` class, which is a base class for creating custo
 The class provides methods to generate feedback based on different providers such as OpenAI and LiteLLM (llama3).
 """
 
-from trulens_eval.feedback.provider import OpenAI, LiteLLM
 from trulens_eval import Feedback
+from ..provider import Provider
 
 class Metric:
     """
     A base class for defining custom metrics to evaluate language models or RAG applications.
     """
     # Private attributes to hold instances of the OpenAI and LiteLLM providers.
-    _provider_openai = None
-    _provider_llama3 = None
     _provider_deepseek = None
 
     def __init__(self, *args, **kwargs):
@@ -44,11 +42,6 @@ class Metric:
         :return: The feedback object with the selector applied.
         """
         raise NotImplementedError()
-        # Example implementation:
-        # return (
-        #     feedback
-        #     .on_input_output()
-        # )
 
     @property
     def feedback_name(self):
@@ -64,7 +57,7 @@ class Metric:
 
         :return: A Feedback object with the OpenAI provider.
         """
-        feedback = self._feedback(self.provider_openai)
+        feedback = self._feedback(Provider.openai.provider)
         return self._feedback_with_selector(feedback)
 
     @property
@@ -74,7 +67,10 @@ class Metric:
 
         :return: A Feedback object with the LiteLLM (llama3) provider.
         """
-        feedback = self._feedback(self.provider_llama3)
+        Provider.llama3.completion_args = {
+            "api_base": "http://localhost:11434"
+        }
+        feedback = self._feedback(Provider.llama3.provider)
         return self._feedback_with_selector(feedback)
     
     @property
@@ -84,43 +80,5 @@ class Metric:
 
         :return: A Feedback object with the LiteLLM (deepseek) provider.
         """
-        feedback = self.__feedback(self.provider_deepseek)
+        feedback = self._feedback(Provider.deepseek.provider)
         return self._feedback_with_selector(feedback)
-
-    @property
-    def provider_openai(self):
-        """
-        Gets or initializes the OpenAI provider.
-
-        :return: The OpenAI provider.
-        """
-        if self._provider_openai is None:
-            self._provider_openai = OpenAI()
-        return self._provider_openai
-
-    @property
-    def provider_llama3(self):
-        """
-        Gets or initializes the LiteLLM (llama3) provider.
-
-        :return: The LiteLLM (llama3) provider.
-        """
-        if self._provider_llama3 is None:
-            self._provider_llama3 = LiteLLM()
-            self._provider_llama3.model_engine = "ollama/llama3"
-            self._provider_llama3.completion_args = {
-                "api_base": "http://localhost:11434"
-            }
-        return self._provider_llama3
-    
-    @property
-    def provider_deepseek(self):
-        """
-        Gets or initializes the LiteLLM (deepseek) provider.
-
-        :return: The LiteLLM (deepseek) provider.
-        """
-        if self._provider_deepseek is None:
-            self._provider_deepseek = LiteLLM()
-            self._provider_deepseek.model_engine = "deepseek/deepseek-chat"
-        return self._provider_deepseek
