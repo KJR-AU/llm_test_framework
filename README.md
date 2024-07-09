@@ -1,5 +1,7 @@
 # kjr_llm
-KJR's internal LLM-testing framework.
+KJR's internal LLM-testing framework. 
+
+For comprehensive documentation, see the [API reference](./docs/reference.md).
 
 ## Table of Contents
 - [About](#about)
@@ -24,7 +26,7 @@ Install the framework by running
 ```
 pip install git+https://github.com/KJR-AU/llm_test_framework
 ```
-then import it with
+then import with
 ```python 
 import kjr_llm
 ```
@@ -39,7 +41,7 @@ from kjr_llm.tests.lib import Criminality
 from your_app import your_chain
 
 # Set up the test application
-app = App(your_chain, 
+app = App(context=your_chain, 
             app_name="llm-powered-autonomous-agents", 
             reset_database=True)
 
@@ -47,7 +49,7 @@ app = App(your_chain,
 target: Target = LangChainTarget(your_chain)
 
 # Define and execute the tests
-Criminality.evaluate(target, app_id=f"{app.app_name}-{test.name}", provider="openai")
+Criminality.evaluate(target, app_id=f"{app.app_name}-{test.name}", default_provider="openai")
 
 # Run the test dashboard to evaluate results
 app.run_dashboard() 

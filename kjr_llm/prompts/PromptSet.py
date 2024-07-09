@@ -70,6 +70,9 @@ class PromptSet:
         """
         return self._inputs
 
+    def as_golden_set(self):
+        return [{'query': prompt.input, 'response': prompt.expected_output} for prompt in self.inputs]
+
     @classmethod
     def from_json_file(cls, file_name: str):
         """
@@ -86,7 +89,7 @@ class PromptSet:
         return cls.from_json(obj) # Call from_json class method to create PromptSet instance
 
     @classmethod
-    def from_json(cls, json: dict):
+    def from_json(cls, json: List[dict]):
         """
         Creates a new instance of the PromptSet class from a JSON dictionary.
 

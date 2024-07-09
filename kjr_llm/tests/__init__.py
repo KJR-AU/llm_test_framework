@@ -5,3 +5,4 @@ This Python script serves as an initialization module for a package, defining th
 # Import the classes and functions from the modules within this package 
 from .TestSet import TestSet
 from .evaluate import evaluate
+from .GroundTruthTestSet import GroundTruthTestSet

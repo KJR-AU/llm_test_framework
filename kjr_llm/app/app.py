@@ -1,18 +1,30 @@
-from trulens_eval import Tru  # Import the Tru class from the trulens_eval module.
-from trulens_eval.app import App as trulens_app  # Import the App class from the trulens_eval.app module and alias it as trulens_app.
-import uuid  # Import the uuid module for generating unique identifiers.
+from trulens_eval import Tru
+from trulens_eval.app import App as trulens_app
+import uuid
+from typing import Any
 import pandas as pd
 
+
 class App:
-    def __init__(self, app_name: str | None = None):
+    def __init__(self, app_name: str | None = None, context: Any = None, reset_database: bool = False):
         """
         Initialize the App instance.
         
         Args:
-            app_name (str | None): The name of the application. If not provided, a unique identifier will be generated.
+            app_name (str | None, optional): The name of the application. If not 
+            provided, a unique identifier will be used.
+            context (any, optional): Set the context of the application.
+            reset_database (bool, optional): If True, reset the local sqlite database
+            used to store test results.
         """
-        self.tru = Tru()  # Create an instance of the Tru class.
-        self.app_name = app_name if app_name else uuid.uuid4().hex  # Set the application name, generating a unique identifier if none is provided.
+        self.tru = Tru() 
+        if reset_database:
+            self.reset_database()
+        if context:
+            self.set_context(context)
+
+        # Generate a unique identifier if no app name is provided
+        self.app_name = app_name if app_name else uuid.uuid4().hex  
 
     def reset_database(self):
         """

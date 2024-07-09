@@ -24,10 +24,8 @@ class Metric:
         self.args = args
         self.kwargs = kwargs
 
-        self._feedback = None
-        self._feedback_fn = None
 
-    def __feedback(self, provider):
+    def _feedback(self, provider):
         """
         Generates a feedback object using the specified provider.
 
@@ -65,7 +63,7 @@ class Metric:
 
         :return: A Feedback object with the OpenAI provider.
         """
-        feedback = self.__feedback(self.provider_openai)
+        feedback = self._feedback(self.provider_openai)
         return self._feedback_with_selector(feedback)
 
     @property
@@ -75,7 +73,7 @@ class Metric:
 
         :return: A Feedback object with the LiteLLM (llama3) provider.
         """
-        feedback = self.__feedback(self.provider_llama3)
+        feedback = self._feedback(self.provider_llama3)
         return self._feedback_with_selector(feedback)
 
     @property
