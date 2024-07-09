@@ -26,7 +26,7 @@ class CustomTarget(Target):
         invoke(self, prompt: str): Invokes the chain's query method with the provided prompt and options.
     """
     
-    def __init__(self, app, options: dict = {}, prompt_key: str = "input"):
+    def __init__(self, app, options: dict = {}, prompt_key: str = "input", invoke_method="query"):
         """
         Initializes the CustomTarget instance.
 
@@ -37,4 +37,4 @@ class CustomTarget(Target):
         """
         # Call the parent class's __init__ method to initialize the instance
         super().__init__(app, options=options, prompt_key=prompt_key,
-                            invoke_method="query")
+                            invoke_method=invoke_method)
