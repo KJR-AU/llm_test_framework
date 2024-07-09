@@ -78,7 +78,7 @@ class TestSet:
             CustomTarget: TruCustomApp
         }        
         recorder_class = recorders.get(type(target))
-        recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
+        recorder = recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
         return recorder
 
     
