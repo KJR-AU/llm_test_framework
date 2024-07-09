@@ -5,20 +5,14 @@ from ..prompts.PromptSet import PromptSet
 from typing import List
 from .UnknownTargetException import UnknownTargetException
 from ..metrics.Metric import Metric
+from ..provider import Provider
 
 class TestSet:
     """
     A class representing a set of tests to evaluate a target using a collection of prompts and feedback metrics.
     """
 
-    # List of supported feedback providers.
-    SUPPORTED_PROVIDERS = [
-        "openai",
-        "llama3",
-        "deepseek"
-    ]
-
-    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", provider: str = None):
+    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: str = None):
         """
         Initializes a new instance of the TestSet class.
 
@@ -30,10 +24,15 @@ class TestSet:
         self.prompts: PromptSet = prompts
         self.feedbacks: List[Feedback] = feedbacks
         self.name: str = name
-        self.provider = provider
+        self.default_provider = default_provider
             
+    @classmethod
+    def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
+        prompts = PromptSet.from_json_file(file_path)
+        return cls(prompts, *args, **kwargs)
 
-    def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False):
+
+    def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False, provider = None):
         """
         Evaluates the target using the prompts and feedbacks defined in the test set.
 
@@ -79,27 +78,27 @@ class TestSet:
             CustomTarget: TruCustomApp
         }        
         recorder_class = recorders.get(type(target))
-        recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
+        recorder = recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
         return recorder
 
     
     @property
-    def provider(self):
+    def default_provider(self):
         """
         The feedback provider used in the test set.
         """
         return self._provider
 
-    @provider.setter
-    def provider(self, provider: str | None):
+    @default_provider.setter
+    def default_provider(self, provider: str | None):
         """
         Sets the feedback provider.
 
         :param provider: The feedback provider to be used.
         """
-        if provider not in [None, *self.SUPPORTED_PROVIDERS]:
-            supported_provider_string: str = ", ".join(self.SUPPORTED_PROVIDERS)
-            raise ValueError(f"unsupported provider: '{self.provider}'. Provider must be None or one of {supported_provider_string}")
+        if provider is not None and not Provider.is_supported(provider):
+            supported_provider_string: str = ", ".join(Provider.all)
+            raise ValueError(f"unsupported provider: '{provider}'. Provider must be None or one of {supported_provider_string}")
         self._provider = provider
 
 
@@ -113,9 +112,9 @@ class TestSet:
             
             # Try to set the provider if no provider has been set
             if isinstance(feedback, Metric):
-                if self.provider is None:
+                if self.default_provider is None:
                     raise ValueError("provider cannot be determined")
-                coerced_feedback = getattr(feedback, self.provider)
+                coerced_feedback = getattr(feedback, self.default_provider)
             elif isinstance(feedback, Feedback):
                 coerced_feedback = feedback
             else:

@@ -3,20 +3,28 @@ This guide helps you to get started evaluating your RAG application.
 
 ## Table of Contents
 - [App](#app)
-- [Target](#target)
-- [Feedback](#metrics)
-- [TestSet](#testset)
-- [Prompt Dataset](#prompt-dataset)
-- [Result Review](#result-review)
+- [Targets](#target)
+    - [Supported Target Frameworks](#supported-target-frameworks)
+- [Metrics](#metrics)
+- [Feedback Provider](#feedback-provider)
+    - [Supported Providers](#supported-providers)
+- [Prompt Sets](#prompt-sets)
+    - [Prompt Data Format](#prompt-data-format)
+    - [Predefined Prompt Sets](#predefined-prompt-sets)
+- [Test Sets](#test-sets)
+    - [Evaluating Applications](#evaluating-applications)
+    - [Predefined Test Sets](#predefined-test-sets)
+- [Review Results](#review-results)
 - [Other](#other)
 
 ## App
 An application needs to be created to monitor any tests that are run.
 
 ```python
-App(target_app: any, app_name: str = None, reset_database: bool = True) -> App
+App(context: Any = None, app_name: str = None, reset_database: bool = True)
 ```
-* target_app: any - the application to be tested
+* context: any - the context to be set. This is generally the LLM application 
+being tested.
 * app_name: str - A name for the application. If not provided a uuid will be
 used.
 * reset_database: bool - if True, reset the local sqlite database used by 
@@ -43,7 +51,7 @@ app.reset_database()
 ## Target
 A Target object wraps the target application to facilitate communication with multiple LLM application frameworks. 
 
-#### Supported LLM Frameworks:
+### Supported Target Frameworks:
 
 | Framework | Url |
 |---------------|-----|
@@ -101,7 +109,7 @@ from llm_test_framework.kjr_llm.targets import CustomTarget
 target: Target = CustomTarget(rag_chain)
 ```
 # Metrics
-<sup>[Main Article](./metrics.md)</sup>
+<sup>[Main Article](./metrics/metrics.md)</sup>
 
 Metrics are individual feedback functions used to assess the performance of an LLM-powered application. They will generally use another LLM, known as the provider model, to score the performance of an application against a rubric in regard to a specific metric. Some feedback metrics may only be supported by a particular feedback provider. For a comprehensive list, see the table below.
 ## Available Metric
@@ -123,24 +131,33 @@ For more details see [TruLens LLMProvider](https://www.trulens.org/trulens_eval/
 | **SelfHarm** | Scores the presence of self harm in the response, lower is better. | openai |
 | **ViolenceGraphic** | Scores the presence of graphic violence in the response, lower is better. | openai |
 | **Groundedness** | Used for RAG applications. Scores how grounded the response is in the context, i.e. not hallucinating. | openai, llama3 |
+| **GroundTruthAgreement** | Scores the agreement between the ground truth and response. | openai, llama3 |
 
 ## Feedback Provider
-A feedback provider is a LLM that is used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
+<a name="feedback-provider"></a>
+A feedback provider is a LLM used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
 
 A provider must be specified for each metric used in a test set. This can be done by accessing a property of a `Metric` object or by setting a property on a `TestSet` object. A `TestSet` will use the `provider` property as a default if no provider has been specified for a `Metric`.
+
+A `Provider` enum is exposed in the `provider` module which can be used to 
+access supported providers.
 
 ```python
 from kjr_llm.metrics import Criminality, Hate
 from kjr_llm.tests import TestSet
+from kjr_llm.provider import Provider
 
 feedbacks = [
+    # The Criminality metric will default to the default provider specified
+    # on the test set, as no explicit provider has been set.
     Criminality,
     # The Hate metric is only supported by openai. Accessing Hate.llama3 will
     # raise a MetricNotAvailableError
     Hate.openai
 ]
 
-test = TestSet(some_prompts, feedbacks, provider="llama3")
+llama3_provider = Provider.llama3
+test = TestSet(some_prompts, feedbacks, default_provider=llama3_provider)
 
 # The Hate metric will use openai as a provider while the Criminality metric
 # will default to llama3 as defined on the TestSet.
@@ -159,7 +176,7 @@ except MetricNotAvailableError:
     print("The Hate metric isn't supported by a llama3 provider")
 ```
 
-### Supported LLM Framework:
+### Supported Providers
 Multiple feedback providers is supported in this framework. 
 
 | Feedback Providers | Url |
@@ -181,7 +198,7 @@ for prompt in prompts:
     print(prompt.as_dict())
 ```
 
-### Prompt Dataset
+### Prompt Data Format
 Prompt data needs to be prepared in a local JSON file. It should contain a list of objects. Each object must have an input field and optionally an expected_output field. 
 - input: str - a message to be used as input to the application
 - expected_output: str (optional) - the expected response from the application
@@ -224,6 +241,7 @@ for prompt in Ambiguousness:
 ```
 
 ## Test Sets
+<a name="test-sets"></a>
 A test set combines a set of `prompts` with one or more feedback `metrics` and can be used to execute the resulting tests against a LLM-powered application and record the results. A `provider` can be set which will be used by `metrics` without an explicit provider.
 
 ```python
@@ -237,22 +255,23 @@ A TestSet provides an `evaluate` method to execute the contained tests on an app
 test_set.evaluate(target: Target, app_id: str | None = None, reset_database: bool = False)
 ```
 
-### Creating Test Sets
+#### Creating Test Sets
 
 ```python
 from kjr_llm.tests import TestSet
 from kjr_llm.metrics import Criminality, Hate
 from kjr_llm.prompts.lib import CriminalityPromptSet
+from kjr_llm.provider import Provider
 
 feedbacks = [
     Criminality(),
     Hate()
 ]
 
-test_set = TestSet(CriminalityPromptSet, feedbacks, app_id="example app", provider="openai")
+test_set = TestSet(CriminalityPromptSet, feedbacks, app_id="example app", default_provider=Provider.OPENAI)
 ```
 
-### Evaluating Targets
+#### Evaluating Targets
 Now that a test set has been created, it can be used to evaluate a target.
 ```python
 from kjr_llm.targets import Target, LangChainTarget
@@ -267,24 +286,26 @@ A library of test sets is available for consumption out of the box. The availabl
 
 | TestSet | Description | python file |
 |---------|-------------|-------------|
-| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminiality.py](./../kjr_llm/tests/lib/Criminality.py) |
+| **Criminality** | TestSet that evaluates the criminality of the RAG application's responses to the list of Criminality related Prompt.  | [Criminality.py](./../kjr_llm/tests/lib/Criminality.py) |
 | **Maliciousness** | TestSet that evaluates the maliciousness of the RAG application's responses to the list of Maliciousness related Prompt. | [Maliciousness.py](./../kjr_llm/tests/lib/Maliciousness.py) |
 | **SelfHarm** | TestSet that evaluates the self harm of the RAG application's responses to the list of SelfHarm related Prompt. | [SelfHarm.py](./../kjr_llm/tests/lib/SelfHarm.py) |
 | **Hate** | TestSet that evaluates the hatefulness of the RAG application's responses to the list of Hate related Prompt. | [Hate.py](./../kjr_llm/tests/lib/Hate.py) |
 | **Harassment** | TestSet that evaluates the harassment of the RAG application's responses to the list of Harassment related Prompt. | [Harassment.py](./../kjr_llm/tests/lib/Harassment.py) |
 | **Insensitivity** | TestSet that evaluates the insensitivity of the RAG application's responses to the list of Insensitivity related Prompt. | [Insensitivity.py](./../kjr_llm/tests/lib/Insensitivity.py) |
 | **Violence** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/lib/Violence.py) |
-| **Groundedness** | TestSet that evaluates the violence of the RAG application's responses to the list of Violence related Prompt. | [Violence.py](./../kjr_llm/tests/GroundednessTestSet.py) |
+| **Groundedness** | TestSet that evaluates the groundedess of the RAG application's responses to the list of Groundedness related Prompt. | [Groundedness.py](./../kjr_llm/tests/GroundednessTestSet.py) |
+| **GroundTruthAgreement** | TestSet that evaluates the ground truth agreement of the RAG application's responses to the list of GroundTruthAgreement related Prompt. | [GroundTruthPromptSet.py](./../kjr_llm/tests/GroundTruthPromptSet.py) |
 
-### Consuming Predefined Test Sets
+#### Consuming Predefined Test Sets
 The following example demonstrates how to consume predefined test sets.
 ```python
 from kjr_llm.tests.lib import Criminality
 from kjr_llm.targets import LangChainTarget
+from kjr_llm.provider import Provider
 from your_app import your_chain
 
 target = LangChainTarget(your_chain)
-result = Criminality.evaluate(target, app_id="your_chain-criminality", provider="openai")
+result = Criminality.evaluate(target, app_id="your_chain-criminality", default_provider=Provider.OPENAI)
 ```
 Execute multiple predefined tests
 ```python
@@ -299,14 +320,15 @@ tests: List[TestSet] = [
 ]
 
 # Evaluate each Test Set.
-test_provider = "openai"
+test_provider = Provider.OPENAI
 for test in tests:
-    test.provider = test_provider
+    test.default_provider = test_provider
 test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for test in tests]
 
 ```
 
-# Result Review
+# Review Results
+<a name="review-results"></a>
 TruLens framework is used to evaluate the RAG application. TruLens provides a TruLens dashboard to display the result of the evaluation.
 
 

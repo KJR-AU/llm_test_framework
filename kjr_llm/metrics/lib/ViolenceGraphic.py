@@ -2,7 +2,7 @@
 from ..Metric import Metric
 
 # Import the custom exception MetricNotAvailableError from the parent package.
-from ..MetricNotAvailableError import MetricNotAvailableError
+from ...exceptions import MetricNotAvailableError
 
 # Define a class named ViolenceGraphic that inherits from the Metric class.
 class ViolenceGraphic(Metric):
