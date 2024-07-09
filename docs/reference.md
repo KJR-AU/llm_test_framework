@@ -183,7 +183,7 @@ Multiple feedback providers is supported in this framework.
 |--------------------|-----|
 | **openai** | https://www.trulens.org/trulens_eval/api/provider/openai/, https://platform.openai.com/docs/overview |
 | **llama3** | https://www.trulens.org/trulens_eval/api/provider/litellm/, https://ollama.com/blog/llama3 |
-
+| **deepseek** | https://www.trulens.org/trulens_eval/api/provider/litellm/, https://platform.deepseek.com/api-docs/ |
 ## Prompt Sets
 Prompts are needed to effectively leverage feedback metrics. This is because metrics assess the performance of an LLM-powered application in a against a rubric. 
 

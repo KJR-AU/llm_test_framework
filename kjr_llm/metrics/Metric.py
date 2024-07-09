@@ -13,6 +13,7 @@ class Metric:
     # Private attributes to hold instances of the OpenAI and LiteLLM providers.
     _provider_openai = None
     _provider_llama3 = None
+    _provider_deepseek = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -75,6 +76,16 @@ class Metric:
         """
         feedback = self._feedback(self.provider_llama3)
         return self._feedback_with_selector(feedback)
+    
+    @property
+    def deepseek(self):
+        """
+        Generates a feedback object using the LiteLLM (deepseek) provider.
+
+        :return: A Feedback object with the LiteLLM (deepseek) provider.
+        """
+        feedback = self.__feedback(self.provider_deepseek)
+        return self._feedback_with_selector(feedback)
 
     @property
     def provider_openai(self):
@@ -101,3 +112,15 @@ class Metric:
                 "api_base": "http://localhost:11434"
             }
         return self._provider_llama3
+    
+    @property
+    def provider_deepseek(self):
+        """
+        Gets or initializes the LiteLLM (deepseek) provider.
+
+        :return: The LiteLLM (deepseek) provider.
+        """
+        if self._provider_deepseek is None:
+            self._provider_deepseek = LiteLLM()
+            self._provider_deepseek.model_engine = "deepseek/deepseek-chat"
+        return self._provider_deepseek

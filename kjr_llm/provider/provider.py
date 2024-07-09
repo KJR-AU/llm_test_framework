@@ -3,12 +3,12 @@ from typing import List
 class Provider:
     OPENAI: str = "openai"
     LLAMA3: str = "llama3"
-    DEEPSEEKER: str = "deepseeker"
+    DEEPSEEK: str = "deepseek"
 
     all: List[str] = [
         OPENAI,
         LLAMA3,
-        DEEPSEEKER
+        DEEPSEEK
     ]
 
     @classmethod
