@@ -3,6 +3,7 @@ from trulens_eval.app import App as trulens_app
 import uuid
 from typing import Any
 import pandas as pd
+import webbrowser
 
 
 class App:
@@ -44,11 +45,12 @@ class App:
         """
         return trulens_app.select_context(llm_application)
 
-    def run_dashboard(self):
+    def run_dashboard(self, port: int = 8501):
         """
         Run the dashboard associated with the Tru instance.
         """
         self.tru.run_dashboard()
+        webbrowser.open(f"http://localhost:{port}", new=0, autoraise=True)
 
     def get_records_and_feedback(self, app_ids=[]):
         """
