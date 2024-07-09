@@ -5,14 +5,14 @@ from ..prompts.PromptSet import PromptSet
 from typing import List
 from .UnknownTargetException import UnknownTargetException
 from ..metrics.Metric import Metric
-from ..provider import Provider
+from ..provider import Provider, FeedbackProvider
 
 class TestSet:
     """
     A class representing a set of tests to evaluate a target using a collection of prompts and feedback metrics.
     """
 
-    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: str = None):
+    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: FeedbackProvider = None):
         """
         Initializes a new instance of the TestSet class.
 
@@ -24,7 +24,7 @@ class TestSet:
         self.prompts: PromptSet = prompts
         self.feedbacks: List[Feedback] = feedbacks
         self.name: str = name
-        self.default_provider = default_provider
+        self.default_provider: FeedbackProvider = default_provider
             
     @classmethod
     def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
@@ -81,7 +81,6 @@ class TestSet:
         recorder = recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
         return recorder
 
-    
     @property
     def default_provider(self):
         """
@@ -90,15 +89,14 @@ class TestSet:
         return self._provider
 
     @default_provider.setter
-    def default_provider(self, provider: str | None):
+    def default_provider(self, provider: FeedbackProvider | None):
         """
         Sets the feedback provider.
 
         :param provider: The feedback provider to be used.
         """
-        if provider is not None and not Provider.is_supported(provider):
-            supported_provider_string: str = ", ".join(Provider.all)
-            raise ValueError(f"unsupported provider: '{provider}'. Provider must be None or one of {supported_provider_string}")
+        if provider is not None and not isinstance(provider, FeedbackProvider):
+            raise ValueError(f"unsupported provider: '{provider}'. Provider must be one of (None, FeedbackProvider)")
         self._provider = provider
 
 
@@ -114,7 +112,7 @@ class TestSet:
             if isinstance(feedback, Metric):
                 if self.default_provider is None:
                     raise ValueError("provider cannot be determined")
-                coerced_feedback = getattr(feedback, self.default_provider)
+                coerced_feedback = getattr(feedback, self.default_provider.name)
             elif isinstance(feedback, Feedback):
                 coerced_feedback = feedback
             else:
