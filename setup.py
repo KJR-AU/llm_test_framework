@@ -72,7 +72,6 @@ setup(
         'kjr_llm.targets',
         'kjr_llm.tests',
         'kjr_llm.tests.lib'
-        
     ],
     install_requires=load_requirements(),
     package_data={
