@@ -10,8 +10,6 @@ class Metric:
     """
     A base class for defining custom metrics to evaluate language models or RAG applications.
     """
-    # Private attributes to hold instances of the OpenAI and LiteLLM providers.
-    _provider_deepseek = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -82,3 +80,4 @@ class Metric:
         """
         feedback = self._feedback(Provider.deepseek.provider)
         return self._feedback_with_selector(feedback)
+
