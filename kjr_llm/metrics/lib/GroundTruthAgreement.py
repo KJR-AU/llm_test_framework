@@ -37,7 +37,7 @@ class GroundTruthAgreement(Metric):
                 print(prompt)
                 raise ValueError("All prompts in a ground truth prompt set must have 'query' and 'response'")
 
-    def _feedback(self):
+    def _feedback(self, provider=None):
         """
         Generates a feedback object using the specified provider.
 
