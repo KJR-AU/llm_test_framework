@@ -84,7 +84,7 @@ class Metric:
 
         :return: A Feedback object with the LiteLLM (deepseek) provider.
         """
-        feedback = self.__feedback(self.provider_deepseek)
+        feedback = self._feedback(self.provider_deepseek)
         return self._feedback_with_selector(feedback)
 
     @property
