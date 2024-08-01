@@ -1,0 +1,21 @@
+{
+    "name": "llm-test-framework-python3.10",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/aws-cli:1": {},
+        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "charliermarsh.ruff",
+          "tamasfe.even-better-toml"
+        ]
+      }
+    },
+    "postCreateCommand": "poetry lock && poetry install && poetry run pre-commit install"
+  }
