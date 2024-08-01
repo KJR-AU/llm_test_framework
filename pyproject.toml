@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "llm-test-framework"
+version = "0.1.0"
+description = "KJR's internal LLM-testing framework."
+authors = [
+    "Joe Burton <joe.burton@kjr.com.au>",
+    "Ji Yu <ji.yu@kjr.com.au>"
+    ]
+readme = "README.md"
+
+[[tool.poetry.packages]]
+include = "kjr_llm"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+trulens_eval = "0.31.0"
+ruff = "^0.5.5"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "0.5.5"
+pytest = "^8.1.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+mypy = "^1.8.0"
+pre-commit = "^3.6.1"
+types-pyyaml = "^6.0.12.12"
+ipykernel = "^6.29.4"
+
+[tool.ruff]
+lint.select = [
+    # Pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # Pylint
+    "PL",
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # flake8
+    "A",   # builtins
+    "Q",   # quotes
+    "TCH", # type checking
+    "ISC", # implicit string concat
+    "B",   # bugbear
+    "EM",  # errmsg
+    "COM", # commas
+    "PTH", # use pathlib
+    "RET", # return
+    "C4",  # comprehensions
+    "S",   # bandit
+    "ANN", # annotations
+    # pyupgrade
+    "UP",
+    # Ruff
+    "RUF",
+    # Eradicate
+    "ERA",
+    # Mccabe Cyclomatic Complexity
+    "C901",
+]
+
+lint.ignore = ["D100", "ANN101", "ANN204", "S105", "COM812", "ISC001", "PLR0913", "N812", "EM102"]
+line-length = 120           # defaults to 88 like black
+target-version = "py310"
+
+lint.per-file-ignores = { "**/tests/*" = ["PLR2004", "S101", "ANN", "S108"] }
