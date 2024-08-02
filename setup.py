@@ -2,39 +2,40 @@
 This setup.py file is used to define and configure a Python package for distribution using setuptools.
 """
 
-from setuptools import setup, find_packages
-import os
 import re
+from pathlib import Path
 
-this_directory = os.path.abspath(os.path.dirname(__file__))
+from setuptools import setup
 
-def load_long_description():
+this_directory = Path(__file__).parent.resolve()
+
+def load_long_description() -> str:
     """
     Reads and returns the content of the README.md file for the package's long description.
     """
-    with open(os.path.join(this_directory, 'README.md')) as f:
+    file_path = this_directory / "README.md"
+    with file_path.open() as f:
         return f.read()
 
-def load_version():
+def load_version() -> str:
     """
     Extracts and returns the version number from the __version__.py file.
     Raises a ValueError if the version number is not found.
     """
-    version_path = os.path.join(
-        this_directory, "__version__.py"
-    )
+    version_path = this_directory / "__version__.py"
     version_pattern = r"version\s*=\s*[\"'](.+)[\"']"
-    with open(version_path) as f:
+    with version_path.open() as f:
         match = re.search(version_pattern, f.read().strip())
         if match is None:
-            raise ValueError(f'invalid version at {version_path}')
+            raise ValueError(f"invalid version at {version_path}")
         return match.group(1)
 
-def load_requirements():
+def load_requirements() -> list[str]:
     """
     Reads and returns the list of dependencies from the requirements.txt file.
     """
-    with open(os.path.join(this_directory, 'requirements.txt')) as f:
+    file_path: Path = this_directory / "requirements.txt"
+    with file_path.open() as f:
         return [line.strip() for line in f]
 
 """
@@ -51,31 +52,31 @@ Configuration:
 - install_requires: A list of dependencies required by the package, read from requirements.txt.
 """
 setup(
-    name='kjr_llm',
+    name="kjr_llm",
     version=load_version(),
     description="KJR's LLM testing framework.",
     long_description=load_long_description(),
     long_description_content_type="text/markdown",
-    url='https://github.com/KJR-AU/llm_test_framework',
-    author='Joe Burton',
-    author_email='joe.burton@kjr.com.au',
+    url="https://github.com/KJR-AU/llm_test_framework",
+    author="Joe Burton",
+    author_email="joe.burton@kjr.com.au",
     packages=[
-        'kjr_llm', 
-        'kjr_llm.app',
-        'kjr_llm.exceptions',
-        'kjr_llm.metrics',
-        'kjr_llm.metrics.lib',
-        'kjr_llm.prompts',
-        'kjr_llm.prompts.lib',
-        'kjr_llm.prompts.lib.data',
-        'kjr_llm.provider',
-        'kjr_llm.targets',
-        'kjr_llm.tests',
-        'kjr_llm.tests.lib'
+        "kjr_llm",
+        "kjr_llm.app",
+        "kjr_llm.exceptions",
+        "kjr_llm.metrics",
+        "kjr_llm.metrics.lib",
+        "kjr_llm.prompts",
+        "kjr_llm.prompts.lib",
+        "kjr_llm.prompts.lib.data",
+        "kjr_llm.provider",
+        "kjr_llm.targets",
+        "kjr_llm.tests",
+        "kjr_llm.tests.lib"
     ],
     install_requires=load_requirements(),
     package_data={
-        'kjr_llm': ['prompts/lib/data/*']
+        "kjr_llm": ["prompts/lib/data/*"]
     },
     include_package_data=True
 )
