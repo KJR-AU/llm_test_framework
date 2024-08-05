@@ -1,13 +1,19 @@
 import uuid
-from trulens_eval import TruChain, TruLlama, Tru, Feedback
-from ..targets import Target, LangChainTarget, LlamaIndexTarget
+
+from trulens_eval import Feedback, Tru, TruChain, TruLlama
+
+from ..exceptions.UnknownTargetError import UnknownTargetError
 from ..prompts.PromptSet import PromptSet
-from typing import List
-from .UnknownTargetException import UnknownTargetException
+from ..targets import LangChainTarget, LlamaIndexTarget, Target
 
 
-def evaluate(target: Target, prompts: PromptSet, feedbacks: List[Feedback], 
-                    app_id: str | None = None, reset_database: bool = True):
+def evaluate(
+    target: Target,
+    prompts: PromptSet,
+    feedbacks: list[Feedback],
+    app_id: str | None = None,
+    reset_database: bool = True,
+) -> None:
     """
     Evaluates a given target using a set of prompts and feedbacks, and optionally resets the database.
 
@@ -24,34 +30,33 @@ def evaluate(target: Target, prompts: PromptSet, feedbacks: List[Feedback],
     # If no app_id is provided, generate a new UUID and convert it to a hexadecimal string
     if app_id is None:
         app_id = uuid.uuid4().hex
-    
+
     # Check if the target is either a LangChainTarget or LlamaIndexTarget, otherwise raise an exception
-    if not isinstance(target, (LangChainTarget, LlamaIndexTarget)):
-        raise UnknownTargetException()
-    
+    if not isinstance(target, LangChainTarget | LlamaIndexTarget):
+        raise UnknownTargetError()
+
     # Initialize the Tru object, which is used for managing the evaluation process
     tru = Tru()
     # Reset Tru object database
     tru.reset_database()
 
     # Define a dictionary to map target types to their corresponding recorder classes
-    recorders = {
-        LangChainTarget: TruChain,
-        LlamaIndexTarget: TruLlama
-    }
+    recorders = {LangChainTarget: TruChain, LlamaIndexTarget: TruLlama}
 
     # Get the appropriate recorder class based on the type of the target
-    recorder_class = recorders.get(type(target))
+    recorder_class: type | None = recorders.get(type(target))
 
     # Create an instance of the recorder class, passing the target's chain, app_id, and feedbacks
-    recorder = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks)
+    if recorder_class is None:
+        raise Exception()
+    recorder: TruChain | TruLlama = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks)
 
     # Use the recorder in a context manager to record the evaluation process
-    with recorder as recording:
+    with recorder as _:
         # Iterate over each prompt in the prompts set
         for prompt in prompts:
             # Invoke the target with the prompt's input and get the response
-            response = target.invoke(prompt.input)
+            _ = target.invoke(prompt.input)
 
     # Run the dashboard to visualize the evaluation results
     tru.run_dashboard()

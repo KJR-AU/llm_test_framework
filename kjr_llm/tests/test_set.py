@@ -1,18 +1,30 @@
 import uuid
-from trulens_eval import TruChain, TruLlama, Feedback, TruCustomApp
-from ..targets import Target, LangChainTarget, LlamaIndexTarget, CustomTarget
-from ..prompts.PromptSet import PromptSet
-from typing import List
-from .UnknownTargetException import UnknownTargetException
+from typing import Self, TypeVar
+
+from trulens_eval import Feedback, TruBasicApp, TruChain, TruCustomApp, TruLlama
+from trulens_eval.schema.record import Record
+
+from ..exceptions import UnknownTargetError
 from ..metrics.Metric import Metric
-from ..provider import Provider, FeedbackProvider
+from ..prompts.PromptSet import PromptSet
+from ..provider import FeedbackProvider
+from ..targets import CustomTarget, LangChainTarget, LlamaIndexTarget, Target
+
+TrulensApp = TypeVar("TrulensApp", TruChain, TruLlama, TruCustomApp, TruBasicApp)
+
 
 class TestSet:
     """
     A class representing a set of tests to evaluate a target using a collection of prompts and feedback metrics.
     """
 
-    def __init__(self, prompts: PromptSet, feedbacks: List[Feedback], name: str = "", default_provider: FeedbackProvider = None):
+    def __init__(
+        self,
+        prompts: PromptSet,
+        feedbacks: list[Feedback],
+        name: str = "",
+        default_provider: FeedbackProvider | None = None,
+    ):
         """
         Initializes a new instance of the TestSet class.
 
@@ -22,17 +34,16 @@ class TestSet:
         :param provider: The feedback provider to be used.
         """
         self.prompts: PromptSet = prompts
-        self.feedbacks: List[Feedback] = feedbacks
+        self.feedbacks: list[Feedback] = feedbacks
         self.name: str = name
         self.default_provider: FeedbackProvider = default_provider
-            
+
     @classmethod
-    def from_prompts_file_json(cls, file_path: str, *args, **kwargs):
+    def from_prompts_file_json(cls: Self, file_path: str, feedbacks: list[Feedback], *args: str, **kwargs: str) -> Self:
         prompts = PromptSet.from_json_file(file_path)
-        return cls(prompts, *args, **kwargs)
+        return cls(prompts, feedbacks, *args, **kwargs)
 
-
-    def evaluate(self, target: Target, app_id: str | None = None, reset_database: bool = False, provider = None):
+    def evaluate(self, target: Target, app_id: str | None = None) -> Record:
         """
         Evaluates the target using the prompts and feedbacks defined in the test set.
 
@@ -41,22 +52,20 @@ class TestSet:
         :param reset_database: If True, resets the database before evaluation.
         :return: The recording of the evaluation.
         """
-        
-        feedbacks = self._get_coerced_feedbacks()
 
-        if reset_database:
-            self.reset_database()
+        feedbacks = self._get_coerced_feedbacks()
 
         recorder = self.get_recorder(target, feedbacks, app_id=app_id)
 
         with recorder as recording:
             for prompt in self.prompts:
-                response = target.invoke(prompt.input)
-        
+                target.invoke(prompt.input)
+
         return recording
 
-
-    def get_recorder(self, target: Target, feedbacks: List[Feedback], app_id: str | None = None):
+    def get_recorder(
+        self, target: Target, feedbacks: list[Feedback], app_id: str | None = None
+    ) -> TruChain | TruLlama | TruCustomApp | TruBasicApp:
         """
         Creates a recorder for the evaluation.
 
@@ -67,29 +76,26 @@ class TestSet:
         """
         if app_id is None:
             app_id = uuid.uuid4().hex
-        
-        if not isinstance(target, (LangChainTarget, LlamaIndexTarget, CustomTarget)):
-            raise UnknownTargetException()
+
+        if not isinstance(target, LangChainTarget | LlamaIndexTarget | CustomTarget):
+            raise UnknownTargetError()
 
         # Define a dictionary to map target types to their corresponding recorder classes
-        recorders = {
-            LangChainTarget: TruChain,
-            LlamaIndexTarget: TruLlama,
-            CustomTarget: TruCustomApp
-        }        
+        recorders = {LangChainTarget: TruChain, LlamaIndexTarget: TruLlama, CustomTarget: TruCustomApp}
         recorder_class = recorders.get(type(target))
-        recorder = recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
-        return recorder
+        if recorder_class is None:
+            raise UnknownTargetError()
+        return recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
 
     @property
-    def default_provider(self):
+    def default_provider(self) -> FeedbackProvider | None:
         """
         The feedback provider used in the test set.
         """
         return self._provider
 
     @default_provider.setter
-    def default_provider(self, provider: FeedbackProvider | None):
+    def default_provider(self, provider: FeedbackProvider | None) -> None:
         """
         Sets the feedback provider.
 
@@ -99,24 +105,24 @@ class TestSet:
             raise ValueError(f"unsupported provider: '{provider}'. Provider must be one of (None, FeedbackProvider)")
         self._provider = provider
 
-
-    def _get_coerced_feedbacks(self):
-        """Returns a list of trulens-compatible feedback functions. Attempts 
+    def _get_coerced_feedbacks(self) -> list[Metric]:
+        """Returns a list of trulens-compatible feedback functions. Attempts
         to use a user-set provider attribute to extract the feedback function
         from a Metric object.
         """
         coerced_feedbacks = []
         for feedback in self.feedbacks:
-            
             # Try to set the provider if no provider has been set
             if isinstance(feedback, Metric):
                 if self.default_provider is None:
-                    raise ValueError("provider cannot be determined")
+                    error_msg = "provider cannot be determined"
+                    raise ValueError(error_msg)
                 coerced_feedback = getattr(feedback, self.default_provider.name)
             elif isinstance(feedback, Feedback):
                 coerced_feedback = feedback
             else:
-                raise TypeError("unrecognised feedback type")
-            
+                type_error_msg: str = "unrecognised feedback type"
+                raise TypeError(type_error_msg)
+
             coerced_feedbacks.append(coerced_feedback)
         return coerced_feedbacks

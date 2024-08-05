@@ -1,11 +1,9 @@
-"""
-This Python script serves as an initialization module for a package, defining the public interface of the package by specifying which classes are exposed when the package is imported.
-"""
-# Import the classes and functions from the modules within this package 
-from .Criminality import Criminality
-from .Harassment import Harassment
-from .Hate import Hate
-from .Maliciousness import Maliciousness
-from .SelfHarm import SelfHarm
-from .Insensitivity import Insensitivity
-from .Violence import Violence
+from .criminality import Criminality
+from .harassment import Harassment
+from .hate import Hate
+from .insensitivity import Insensitivity
+from .maliciousness import Maliciousness
+from .self_harm import SelfHarm
+from .violence import Violence
+
+__all__ = ["Criminality", "Harassment", "Hate", "Insensitivity", "Maliciousness", "SelfHarm", "Violence"]
