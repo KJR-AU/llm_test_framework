@@ -7,7 +7,9 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 # Poetry and other dependencies
 RUN pipx install poetry && \
     pipx install cmake &&
-    pipx install ruff
+    pipx install ruff &&
+    pipx install isort &&
+    pipx install mypy
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt update && export DEBIAN_FRONTEND=noninteractive \
