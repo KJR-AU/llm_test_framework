@@ -15,7 +15,7 @@ class GroundTruthAgreement(golden_set: List[dict[str, str]] | PromptSet, agreeme
 ```
 * golden_set: *List[dict[str, str]] | PromptSet* - A list of JSON objects
 containing prompts and expected responses. Alternatively a *PromptSet* loaded
-from the same data can be provided. 
+from the same data can be provided.
 * agreement_measure: *str* - The name of the agreement measure used to assess
 similarity with the ground truth data.
 ### Agreement Measures

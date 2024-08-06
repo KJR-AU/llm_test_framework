@@ -9,7 +9,7 @@ from llm_test_framework.kjr_llm.tests.lib import Criminality
 from your_app_v1 import your_chain_v1
 from your_app_v2 import your_chain_v2
 
-app = App(your_chain, 
+app = App(your_chain,
             app_name="side-by-side-example",
             reset_database=True)
 

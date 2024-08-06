@@ -23,11 +23,11 @@ An application needs to be created to monitor any tests that are run.
 ```python
 App(context: Any = None, app_name: str = None, reset_database: bool = True)
 ```
-* context: any - the context to be set. This is generally the LLM application 
+* context: any - the context to be set. This is generally the LLM application
 being tested.
 * app_name: str - A name for the application. If not provided a uuid will be
 used.
-* reset_database: bool - if True, reset the local sqlite database used by 
+* reset_database: bool - if True, reset the local sqlite database used by
 trulens
 #### Usage
 ```python
@@ -36,7 +36,7 @@ from kjr_llm.app import App
 from your_app import your_chain
 
 # set up the test application
-app = App(rag_chain, app_name="llm-powered-autonomous-agents", reset_database=True) 
+app = App(rag_chain, app_name="llm-powered-autonomous-agents", reset_database=True)
 ```
 The target application can be updated using the `set_context` method
 ```python
@@ -49,7 +49,7 @@ app.reset_database()
 ```
 
 ## Target
-A Target object wraps the target application to facilitate communication with multiple LLM application frameworks. 
+A Target object wraps the target application to facilitate communication with multiple LLM application frameworks.
 
 ### Supported Target Frameworks:
 
@@ -64,7 +64,7 @@ LangChainTarget(chain: any, options: dict = {}, prompt_key: str = "input")
 ```
 * chain: any - the LangChain chain to be tested
 * options: dict<any, any> - a dictionary of options to be passed into application calls.
-If set, the prompt passed to the invoke method will be added to the options 
+If set, the prompt passed to the invoke method will be added to the options
 dict using the key defined with `prompt_key`.
 * prompt_key: str - used to set the prompt passed to the invoke method on a
 possible opts dictionary before the dict is passed to the underlying app. Only
@@ -75,7 +75,7 @@ LlamaIndexTarget(app: any, options: dict = {}, prompt_key: str = "input")
 ```
 * app: any - the LlamaIndex application to be tested
 * options: dict<any, any> - a dictionary of options to be passed into application calls.
-If set, the prompt passed to the invoke method will be added to the options 
+If set, the prompt passed to the invoke method will be added to the options
 dict using the key defined with `prompt_key`.
 * prompt_key: str - used to set the prompt passed to the invoke method on a
 possible opts dictionary before the dict is passed to the underlying app. Only
@@ -86,7 +86,7 @@ CustomTarget(app: any, options: dict = {}, prompt_key: str = "input")
 ```
 * app: any - the custom application to be tested
 * options: dict<any, any> - a dictionary of options to be passed into application calls.
-If set, the prompt passed to the invoke method will be added to the options 
+If set, the prompt passed to the invoke method will be added to the options
 dict using the key defined with `prompt_key`.
 * prompt_key: str - used to set the prompt passed to the invoke method on a
 possible opts dictionary before the dict is passed to the underlying app. Only
@@ -135,11 +135,11 @@ For more details see [TruLens LLMProvider](https://www.trulens.org/trulens_eval/
 
 ## Feedback Provider
 <a name="feedback-provider"></a>
-A feedback provider is a LLM used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application. 
+A feedback provider is a LLM used to evaluate the target RAG application. For instance, a llama3 provider can be used to evaluate an openai RAG application.
 
 A provider must be specified for each metric used in a test set. This can be done by accessing a property of a `Metric` object or by setting a property on a `TestSet` object. A `TestSet` will use the `provider` property as a default if no provider has been specified for a `Metric`.
 
-A `Provider` enum is exposed in the `provider` module which can be used to 
+A `Provider` enum is exposed in the `provider` module which can be used to
 access supported providers.
 
 ```python
@@ -177,7 +177,7 @@ except MetricNotAvailableError:
 ```
 
 ### Supported Providers
-Multiple feedback providers is supported in this framework. 
+Multiple feedback providers is supported in this framework.
 
 | Feedback Providers | Url |
 |--------------------|-----|
@@ -185,7 +185,7 @@ Multiple feedback providers is supported in this framework.
 | **llama3** | https://www.trulens.org/trulens_eval/api/provider/litellm/, https://ollama.com/blog/llama3 |
 | **deepseek** | https://www.trulens.org/trulens_eval/api/provider/litellm/, https://platform.deepseek.com/api-docs/ |
 ## Prompt Sets
-Prompts are needed to effectively leverage feedback metrics. This is because metrics assess the performance of an LLM-powered application in a against a rubric. 
+Prompts are needed to effectively leverage feedback metrics. This is because metrics assess the performance of an LLM-powered application in a against a rubric.
 
 A `PromptSet` class is used to wrap a set of one or more prompts. The class provides a method to load a list of prompts from a json file and supports iteration.
 
@@ -199,7 +199,7 @@ for prompt in prompts:
 ```
 
 ### Prompt Data Format
-Prompt data needs to be prepared in a local JSON file. It should contain a list of objects. Each object must have an input field and optionally an expected_output field. 
+Prompt data needs to be prepared in a local JSON file. It should contain a list of objects. Each object must have an input field and optionally an expected_output field.
 - input: str - a message to be used as input to the application
 - expected_output: str (optional) - the expected response from the application
 
@@ -216,7 +216,7 @@ Prompt data needs to be prepared in a local JSON file. It should contain a list 
 ]
 ```
 ### Predefined Prompt Sets
-A number of predefined prompt sets are available for consumption by the framework. These prompts are based on a [test dataset](https://kjra-my.sharepoint.com/:x:/g/personal/aletta_cawood_kjr_com_au/ET5C9M6YYPpNr6iAL7MuvfgBDma8omCJaq1Hhcczt-Kzlg?e=S2JXoX) created by Aletta Cawood and Marielle Selmo. 
+A number of predefined prompt sets are available for consumption by the framework. These prompts are based on a [test dataset](https://kjra-my.sharepoint.com/:x:/g/personal/aletta_cawood_kjr_com_au/ET5C9M6YYPpNr6iAL7MuvfgBDma8omCJaq1Hhcczt-Kzlg?e=S2JXoX) created by Aletta Cawood and Marielle Selmo.
 
 | Name | Description |
 |--------------------|-----|
@@ -332,7 +332,7 @@ test_results = [test.evaluate(target, app_id=f"{app.app_name}-{test.name}") for 
 TruLens framework is used to evaluate the RAG application. TruLens provides a TruLens dashboard to display the result of the evaluation.
 
 
-To start TruLens dashboard in the new python file that 
+To start TruLens dashboard in the new python file that
 ```python
 app.run_dashboard()
 ```
@@ -356,4 +356,3 @@ For more advanced usage please read [advanced.md](./advanced.md) file.
 
 For example:
 - Test Prompt generation
-

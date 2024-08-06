@@ -12,7 +12,7 @@ hallucination. Chain of thought reasoning is always included.
 ```python
 class Groundedness(context_path)
 ```
-* context_path: *Lens* - Trulens Selector path to an array of context documents 
+* context_path: *Lens* - Trulens Selector path to an array of context documents
 returned by the context-retrieval tool.
 
 ### Example
@@ -20,7 +20,7 @@ returned by the context-retrieval tool.
 from kjr_llm.metrics import Groundedness
 from trulens_eval import Select
 
-context_path = Select.RecordCalls.retrieve.rets 
+context_path = Select.RecordCalls.retrieve.rets
 groundedness = Groundedness(query_path) \
                 .openai
 ```

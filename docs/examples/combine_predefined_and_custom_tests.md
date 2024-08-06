@@ -10,11 +10,11 @@ from llm_test_framework.kjr_llm.metrics import (
     AnswerRelevance,
     Harassment,
     Hate
-) 
+)
 from your_app import your_chain
 
 # Set up the test application
-app = App(your_chain, 
+app = App(your_chain,
             app_name="llm-powered-autonomous-agents",
             reset_database=True)
 
@@ -44,5 +44,5 @@ provider = "openai"
 for test in tests:
     result = test.evaluate(your_chain, provider=provider)
 
-app.run_dashboard() 
+app.run_dashboard()
 ```
