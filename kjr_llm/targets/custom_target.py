@@ -2,14 +2,15 @@
 This module defines a custom target class that extends a base `Target` class.
 The `CustomTarget` class is designed to interact with a chain object, which is used to process and query data.
 
-Classes:
-    CustomTarget: A custom implementation of the `Target` class that allows for additional options and a specific prompt key.
-
 Imports:
     from .Target import Target: Imports the base `Target` class from the same package.
 """
 
-from .Target import Target
+from collections.abc import Callable
+from typing import Any
+
+from .target import Target
+
 
 class CustomTarget(Target):
     """
@@ -25,8 +26,14 @@ class CustomTarget(Target):
         chain(self): Property that returns the chain object.
         invoke(self, prompt: str): Invokes the chain's query method with the provided prompt and options.
     """
-    
-    def __init__(self, app, options: dict = {}, prompt_key: str = "input", invoke_method="query"):
+
+    def __init__(
+        self,
+        app: Callable[[Any], Any],
+        options: dict[str, Any] | None = None,
+        prompt_key: str = "input",
+        invoke_method: str = "query",
+    ):
         """
         Initializes the CustomTarget instance.
 
@@ -36,5 +43,4 @@ class CustomTarget(Target):
             prompt_key (str, optional): The key to use for the prompt in the input dictionary. Defaults to "input".
         """
         # Call the parent class's __init__ method to initialize the instance
-        super().__init__(app, options=options, prompt_key=prompt_key,
-                            invoke_method=invoke_method)
+        super().__init__(app, options=options, prompt_key=prompt_key, invoke_method=invoke_method)
