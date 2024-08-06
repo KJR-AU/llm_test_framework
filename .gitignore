@@ -5,3 +5,4 @@ build/
 *.egg-info/
 poetry.lock
 .ruff_cache/
+.mypy_cache/
