@@ -15,6 +15,8 @@ include = "kjr_llm"
 python = "~3.11"
 trulens_eval = "0.31.0"
 ruff = "^0.5.5"
+pandas = "2.2.2"
+llama_index = "0.10.61"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.5.5"
@@ -63,6 +65,6 @@ lint.select = [
 
 lint.ignore = ["D100", "ANN101", "ANN204", "S105", "COM812", "ISC001", "PLR0913", "N812", "EM102"]
 line-length = 120           # defaults to 88 like black
-target-version = "py310"
+target-version = "py311"
 
-lint.per-file-ignores = { "**/tests/*" = ["PLR2004", "S101", "ANN", "S108"] }
+#lint.per-file-ignores = { "**/tests/*" = ["PLR2004", "S101", "ANN", "S108"] }
