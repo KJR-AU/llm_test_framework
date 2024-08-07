@@ -1,17 +1,14 @@
-"""
-This module defines the `Metric` class, which is a base class for creating custom metrics that can be used to evaluate the performance of language models or RAG applications.
-The class provides methods to generate feedback based on different providers such as OpenAI and LiteLLM (llama3).
-"""
-
 from trulens_eval import Feedback
+
 from ..provider import Provider
+
 
 class Metric:
     """
     A base class for defining custom metrics to evaluate language models or RAG applications.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: object, **kwargs: object) -> None:
         """
         Initializes a new instance of the Metric class.
 
@@ -21,8 +18,7 @@ class Metric:
         self.args = args
         self.kwargs = kwargs
 
-
-    def _feedback(self, provider):
+    def _feedback(self, provider: Provider) -> Feedback:
         """
         Generates a feedback object using the specified provider.
 
@@ -32,7 +28,7 @@ class Metric:
         feedback_metric = getattr(provider, self.feedback_name)
         return Feedback(feedback_metric, *self.args, **self.kwargs)
 
-    def _feedback_with_selector(self, feedback):
+    def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
         """
         Applies a feedback selector to the feedback object. This method is intended to be overridden in subclasses.
 
@@ -42,14 +38,14 @@ class Metric:
         raise NotImplementedError()
 
     @property
-    def feedback_name(self):
+    def feedback_name(self) -> str:
         """
         The name of the feedback metric. This property should be overridden in subclasses.
         """
         raise NotImplementedError()
 
     @property
-    def openai(self):
+    def openai(self) -> Feedback:
         """
         Generates a feedback object using the OpenAI provider.
 
@@ -59,20 +55,18 @@ class Metric:
         return self._feedback_with_selector(feedback)
 
     @property
-    def llama3(self):
+    def llama3(self) -> Feedback:
         """
         Generates a feedback object using the LiteLLM (llama3) provider.
 
         :return: A Feedback object with the LiteLLM (llama3) provider.
         """
-        Provider.llama3.completion_args = {
-            "api_base": "http://localhost:11434"
-        }
+        Provider.llama3.completion_args = {"api_base": "http://localhost:11434"}
         feedback = self._feedback(Provider.llama3.provider)
         return self._feedback_with_selector(feedback)
-    
+
     @property
-    def deepseek(self):
+    def deepseek(self) -> Feedback:
         """
         Generates a feedback object using the LiteLLM (deepseek) provider.
 
@@ -80,4 +74,3 @@ class Metric:
         """
         feedback = self._feedback(Provider.deepseek.provider)
         return self._feedback_with_selector(feedback)
-
