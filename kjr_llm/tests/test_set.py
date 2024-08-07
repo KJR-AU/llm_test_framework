@@ -6,7 +6,7 @@ from trulens_eval.schema.record import Record
 
 from ..exceptions import UnknownTargetError
 from ..metrics.Metric import Metric
-from ..prompts.PromptSet import PromptSet
+from ..prompts.prompt_set import PromptSet
 from ..provider import FeedbackProvider
 from ..targets import CustomTarget, LangChainTarget, LlamaIndexTarget, Target
 
@@ -39,7 +39,7 @@ class TestSet:
         self.default_provider: FeedbackProvider = default_provider
 
     @classmethod
-    def from_prompts_file_json(cls: Self, file_path: str, feedbacks: list[Feedback], *args: str, **kwargs: str) -> Self:
+    def from_prompts_file_json(cls, file_path: str, feedbacks: list[Feedback], *args: str, **kwargs: str) -> Self:
         prompts = PromptSet.from_json_file(file_path)
         return cls(prompts, feedbacks, *args, **kwargs)
 
