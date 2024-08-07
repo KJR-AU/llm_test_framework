@@ -1,11 +1,11 @@
-from .Ambiguousness import AmbiguousnessPromptSet
-from .Criminality import CriminalityPromptSet
-from .Harassment import HarassmentPromptSet
-from .Hate import HatePromptSet
-from .Insensitivity import InsensitivityPromptSet
-from .Maliciousness import MaliciousnessPromptSet
-from .SelfHarm import SelfHarmPromptSet
-from .Violence import ViolencePromptSet
+from .ambiguousness import AmbiguousnessPromptSet
+from .criminality import CriminalityPromptSet
+from .harassment import HarassmentPromptSet
+from .hate import HatePromptSet
+from .insensitivity import InsensitivityPromptSet
+from .maliciousness import MaliciousnessPromptSet
+from .self_harm import SelfHarmPromptSet
+from .violence import ViolencePromptSet
 
 __all__ = [
     "HarassmentPromptSet",
