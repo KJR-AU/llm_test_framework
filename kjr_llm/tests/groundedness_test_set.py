@@ -6,7 +6,7 @@ from typing import Self
 from trulens_eval.utils.serial import Lens
 
 from ..metrics import Groundedness
-from ..metrics.Metric import Metric
+from ..metrics.metric import Metric
 
 # Import the PromptSet class from the prompts module within the parent package
 from ..prompts import PromptSet

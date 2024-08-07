@@ -5,7 +5,7 @@ from trulens_eval import Feedback, TruBasicApp, TruChain, TruCustomApp, TruLlama
 from trulens_eval.schema.record import Record
 
 from ..exceptions import UnknownTargetError
-from ..metrics.Metric import Metric
+from ..metrics.metric import Metric
 from ..prompts.prompt_set import PromptSet
 from ..provider import FeedbackProvider
 from ..targets import CustomTarget, LangChainTarget, LlamaIndexTarget, Target

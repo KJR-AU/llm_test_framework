@@ -2,8 +2,8 @@ import uuid
 
 from trulens_eval import Feedback, Tru, TruChain, TruLlama
 
-from ..exceptions.UnknownTargetError import UnknownTargetError
-from ..prompts.PromptSet import PromptSet
+from ..exceptions.unknown_target_error import UnknownTargetError
+from ..prompts.prompt_set import PromptSet
 from ..targets import LangChainTarget, LlamaIndexTarget, Target
 
 

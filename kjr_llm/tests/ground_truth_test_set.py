@@ -20,7 +20,7 @@ class GroundTruthTestSet(TestSet):
                                         used by the ground truth agreement metric.
         """
         feedback = GroundTruthAgreement(prompts, agreement_measure=agreement_measure)
-        feedback_fn = feedback._feedback_with_selector(feedback._feedback())
+        feedback_fn = feedback._feedback_with_selector(feedback._feedback(None))
         # Call the constructor of the parent class (TestSet) with the prompts, feedback, and optional name and provider
         super().__init__(prompts, [feedback_fn], name=name, default_provider=None)
 
