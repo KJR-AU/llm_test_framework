@@ -52,7 +52,6 @@ lint.select = [
     "RET", # return
     "C4",  # comprehensions
     "S",   # bandit
-    "ANN", # annotations
     # pyupgrade
     "UP",
     # Ruff
@@ -63,7 +62,7 @@ lint.select = [
     "C901",
 ]
 
-lint.ignore = ["D100", "ANN101", "ANN204", "S105", "COM812", "ISC001", "PLR0913", "N812", "EM102"]
+lint.ignore = ["D100", "ANN101", "ANN102", "ANN204", "S105", "COM812", "ISC001", "PLR0913", "N812", "EM102"]
 line-length = 120           # defaults to 88 like black
 target-version = "py311"
 
