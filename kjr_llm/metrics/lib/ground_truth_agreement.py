@@ -14,9 +14,9 @@ class GroundTruthAgreement(Metric):
         super().__init__()
 
         if isinstance(golden_set, PromptSet):
-            golden_set = golden_set.as_golden_set()
+            golden_set_json = golden_set.as_golden_set()
 
-        self._validate_prompts(golden_set)
+        self._validate_prompts(golden_set_json)
 
         self.golden_set = golden_set
         self.ground_truth_measure = agreement_measure
@@ -29,7 +29,7 @@ class GroundTruthAgreement(Metric):
     def ground_truth_agreement(self) -> GroundTruthAgreementTrulens:
         return GroundTruthAgreementTrulens(self.golden_set)
 
-    def _validate_prompts(self, prompts: list[dict[str, str]]) -> None:
+    def _validate_prompts(self, prompts: list[dict[str, str | None]]) -> None:
         for prompt in prompts:
             if not (prompt.get("query") and prompt.get("response")):
                 print(prompt)

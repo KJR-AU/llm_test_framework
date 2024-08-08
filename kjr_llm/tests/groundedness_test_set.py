@@ -10,6 +10,7 @@ from ..metrics.metric import Metric
 
 # Import the PromptSet class from the prompts module within the parent package
 from ..prompts import PromptSet
+from ..provider import FeedbackProvider
 from .test_set import TestSet
 
 
@@ -20,7 +21,9 @@ class GroundednessTestSet(TestSet):
     to evaluate the groundedness of responses based on provided prompts and context.
     """
 
-    def __init__(self, prompts: PromptSet, context_path: Lens, name: str = "", provider: str | None = None):
+    def __init__(
+        self, prompts: PromptSet, context_path: Lens, name: str = "", provider: FeedbackProvider | None = None
+    ):
         """
         Args:
             prompts (PromptSet): The set of prompts to be used for evaluation.
@@ -35,7 +38,7 @@ class GroundednessTestSet(TestSet):
 
     @classmethod
     def from_file(
-        cls, file_path: str | Path, feedbacks: list[Metric], name: str = "", provider: str | None = None
+        cls, file_path: str | Path, feedbacks: list[Metric], name: str = "", provider: FeedbackProvider | None = None
     ) -> Self:
         """
         Class method to create a GroundednessTestSet instance from a JSON file containing prompts.

@@ -39,9 +39,11 @@ class TestSet:
         self.default_provider: FeedbackProvider = default_provider
 
     @classmethod
-    def from_prompts_file_json(cls, file_path: str, feedbacks: list[Feedback], *args: str, **kwargs: str) -> Self:
+    def from_prompts_file_json(
+        cls, file_path: str, feedbacks: list[Feedback], name: str = "", default_provider: FeedbackProvider | None = None
+    ) -> Self:
         prompts = PromptSet.from_json_file(file_path)
-        return cls(prompts, feedbacks, *args, **kwargs)
+        return cls(prompts, feedbacks, name=name, default_provider=default_provider)
 
     def evaluate(self, target: Target, app_id: str | None = None) -> Record:
         """

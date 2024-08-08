@@ -49,7 +49,7 @@ def evaluate(
     # Create an instance of the recorder class, passing the target's chain, app_id, and feedbacks
     if recorder_class is None:
         raise Exception()
-    recorder: TruChain | TruLlama = recorder_class(target.chain, app_id=app_id, feedbacks=feedbacks)
+    recorder: TruChain | TruLlama = recorder_class(target.app, app_id=app_id, feedbacks=feedbacks)
 
     # Use the recorder in a context manager to record the evaluation process
     with recorder as _:
