@@ -24,7 +24,7 @@ repos:
     hooks:
       - id: mypy
         files: ^(kjr_llm)/
-        args: [--strict, --ignore-missing-imports, "--follow-imports=skip"]
+        args: [--strict, --ignore-missing-imports]
         exclude: docs/
         additional_dependencies:
           - pydantic~=2.0
