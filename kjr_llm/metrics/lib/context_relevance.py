@@ -1,3 +1,4 @@
+import numpy as np
 from trulens_eval import Feedback
 from trulens_eval.utils.serial import Lens
 
@@ -15,4 +16,4 @@ class ContextRelevance(Metric):
         return "context_relevance_with_cot_reasons"
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on(self.context_path).aggregate(np.mean)
