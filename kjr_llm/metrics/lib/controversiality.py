@@ -1,4 +1,4 @@
-from trulens_eval import Feedback
+from trulens.core.feedback.feedback import Feedback
 
 from ..metric import Metric
 
@@ -12,4 +12,4 @@ class Controversiality(Metric):
         return "controversiality_with_cot_reasons"
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on_output()

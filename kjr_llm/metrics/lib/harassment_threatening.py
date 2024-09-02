@@ -1,4 +1,4 @@
-from trulens_eval import Feedback
+from trulens.core.feedback.feedback import Feedback
 
 from ...exceptions import MetricNotAvailableError
 from ..metric import Metric
@@ -17,4 +17,4 @@ class HarassmentThreatening(Metric):
         raise MetricNotAvailableError()
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on_output()

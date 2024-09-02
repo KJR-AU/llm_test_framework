@@ -1,6 +1,6 @@
 from typing import Any
 
-from trulens_eval.feedback.provider import LiteLLM
+from trulens.providers.litellm.provider import LiteLLM
 
 from .feedback_provider import FeedbackProvider
 

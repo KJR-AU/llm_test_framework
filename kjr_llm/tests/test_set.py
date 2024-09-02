@@ -1,7 +1,11 @@
 import uuid
 from typing import Self, TypeVar
 
-from trulens_eval import Feedback, TruBasicApp, TruChain, TruCustomApp, TruLlama
+from trulens.apps.langchain.tru_chain import TruChain
+from trulens.apps.llamaindex.tru_llama import TruLlama
+from trulens.apps.custom import TruCustomApp
+from trulens.apps.basic import TruBasicApp
+from trulens.core.feedback.feedback import Feedback
 from trulens_eval.schema.record import Record
 
 from ..exceptions import UnknownTargetError

@@ -75,7 +75,7 @@ class PromptSet:
         return self._inputs
 
     def as_golden_set(self) -> list[dict[str, str | None]]:
-        return [{"query": prompt.input, "response": prompt.expected_output} for prompt in self.inputs]
+        return [{"query": prompt.input, "expected_response": prompt.expected_output} for prompt in self.inputs]
 
     @classmethod
     def from_json_file(cls, file_name: Path | str) -> Self:

@@ -2,11 +2,12 @@ import uuid
 import webbrowser
 
 import pandas as pd
-from trulens_eval import Tru
-from trulens_eval.app import App as TrulensApp
+from trulens.core.session import TruSession
+from trulens.core.database.connector.default import DefaultDBConnector
+from trulens.core.app import App as TrulensApp
 from trulens_eval.schema.record import Record
 from trulens_eval.utils.serial import Lens
-
+from trulens.dashboard import run_dashboard
 
 class App:
     def __init__(self, app_name: str | None = None, context: object | None = None, reset_database: bool = False):
@@ -20,7 +21,8 @@ class App:
             reset_database (bool, optional): If True, reset the local sqlite database
             used to store test results.
         """
-        self.tru = Tru()
+        connector = DefaultDBConnector()
+        self.tru = TruSession(connector=connector)
         if reset_database:
             self.reset_database()
         if context:
@@ -51,7 +53,7 @@ class App:
         """
         Run the dashboard associated with the Tru instance.
         """
-        self.tru.run_dashboard()
+        run_dashboard(session=self.tru, port=port)
         if open_in_browser:
             webbrowser.open(f"http://localhost:{port}", new=0, autoraise=True)
 

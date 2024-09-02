@@ -1,4 +1,4 @@
-from trulens_eval.feedback.provider import OpenAI
+from trulens.providers.openai.provider import OpenAI
 
 from .feedback_provider import FeedbackProvider
 

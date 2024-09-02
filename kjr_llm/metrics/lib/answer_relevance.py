@@ -1,5 +1,4 @@
-from trulens_eval import Feedback
-
+from trulens.core.feedback.feedback import Feedback
 from ..metric import Metric
 
 

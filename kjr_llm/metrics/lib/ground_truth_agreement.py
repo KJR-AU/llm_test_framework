@@ -1,7 +1,7 @@
 from typing import Self
 
-from trulens_eval import Feedback
-from trulens_eval.feedback import GroundTruthAgreement as GroundTruthAgreementTrulens
+from trulens.core.feedback.feedback import Feedback
+from trulens.feedback.groundtruth import GroundTruthAgreement as GroundTruthAgreementTrulens
 
 from ...prompts import PromptSet
 from ..metric import Metric
@@ -15,6 +15,7 @@ class GroundTruthAgreement(Metric):
 
         if isinstance(golden_set, PromptSet):
             golden_set_json = golden_set.as_golden_set()
+            golden_set = golden_set_json
 
         self._validate_prompts(golden_set_json)
 
@@ -31,9 +32,9 @@ class GroundTruthAgreement(Metric):
 
     def _validate_prompts(self, prompts: list[dict[str, str | None]]) -> None:
         for prompt in prompts:
-            if not (prompt.get("query") and prompt.get("response")):
+            if not (prompt.get("query") and prompt.get("expected_response")):
                 print(prompt)
-                error_message: str = "All prompts in a ground truth prompt set must have 'query' and 'response'"
+                error_message: str = "All prompts in a ground truth prompt set must have 'query' and 'expected_response'"
                 raise ValueError(error_message)
 
     def _feedback(self, provider: object) -> Feedback:

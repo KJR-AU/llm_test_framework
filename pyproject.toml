@@ -13,10 +13,15 @@ include = "kjr_llm"
 
 [tool.poetry.dependencies]
 python = "~3.11"
-trulens_eval = "0.31.0"
+trulens = "1.0.1"
 ruff = "^0.5.5"
 pandas = "2.2.2"
 llama_index = "0.10.61"
+trulens-apps-langchain >= "1.0.0"
+trulens-apps-llamaindex >= "1.0.0"
+trulens-providers-litellm>="1.0.0"
+trulens-providers-openai>="1.0.0"
+trulens-benchmark>="1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.5.5"
