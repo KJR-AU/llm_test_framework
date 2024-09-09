@@ -1,0 +1,8 @@
+trulens = "1.0.1"
+pandas = "2.2.2"
+llama_index = "0.10.61"
+trulens-apps-langchain = "1.0.1"
+trulens-apps-llamaindex = "1.0.1"
+trulens-providers-litellm="1.0.1"
+trulens-providers-openai="1.0.1"
+trulens-benchmark="1.0.1"
