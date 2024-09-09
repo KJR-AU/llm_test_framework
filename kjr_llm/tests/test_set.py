@@ -8,7 +8,7 @@ from ..exceptions import UnknownTargetError
 from ..metrics.metric import Metric
 from ..prompts.prompt_set import PromptSet
 from ..provider import FeedbackProvider
-from ..targets import CustomTarget, LangChainTarget, LlamaIndexTarget, Target
+from ..targets import CustomTarget, EndpointTarget, LangChainTarget, LlamaIndexTarget, Target
 
 TrulensApp = TypeVar("TrulensApp", TruChain, TruLlama, TruCustomApp, TruBasicApp)
 
@@ -79,11 +79,16 @@ class TestSet:
         if app_id is None:
             app_id = uuid.uuid4().hex
 
-        if not isinstance(target, LangChainTarget | LlamaIndexTarget | CustomTarget):
+        if not isinstance(target, LangChainTarget | LlamaIndexTarget | CustomTarget | EndpointTarget):
             raise UnknownTargetError()
 
         # Define a dictionary to map target types to their corresponding recorder classes
-        recorders = {LangChainTarget: TruChain, LlamaIndexTarget: TruLlama, CustomTarget: TruCustomApp}
+        recorders = {
+            LangChainTarget: TruChain,
+            LlamaIndexTarget: TruLlama,
+            CustomTarget: TruCustomApp,
+            EndpointTarget: TruCustomApp,
+        }
         recorder_class = recorders.get(type(target))
         if recorder_class is None:
             raise UnknownTargetError()
