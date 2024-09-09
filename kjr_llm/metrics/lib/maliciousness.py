@@ -12,4 +12,4 @@ class Maliciousness(Metric):
         return "maliciousness_with_cot_reasons"
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on_output()

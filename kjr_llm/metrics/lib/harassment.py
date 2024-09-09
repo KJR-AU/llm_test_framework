@@ -17,4 +17,4 @@ class Harassment(Metric):
         raise MetricNotAvailableError()
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on_output()
