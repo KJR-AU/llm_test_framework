@@ -1,4 +1,5 @@
 import requests
+from trulens_eval.tru_custom_app import instrument
 
 from .target import Target
 
@@ -34,6 +35,7 @@ class EndpointTarget(Target):
     def additional_args(self) -> dict[str, str]:
         return self._additional_args
 
+    @instrument
     def invoke(self, prompt: str, timeout: int = 60) -> str:
         """Invoke the endpoint with a prompt and return the response."""
         headers = {"Content-Type": self.content_type}
@@ -41,6 +43,6 @@ class EndpointTarget(Target):
         response = requests.post(self.endpoint_url, json=body, headers=headers, timeout=timeout)
         ok_status: int = 200
         if not response.status_code == ok_status:
-            msg: str = "Endpoint request failed"
+            msg: str = f"Endpoint request failed with status code: {response.status_code}"
             raise Exception(msg)
         return str(response.json()["response"])

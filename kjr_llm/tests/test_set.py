@@ -92,7 +92,8 @@ class TestSet:
         recorder_class = recorders.get(type(target))
         if recorder_class is None:
             raise UnknownTargetError()
-        return recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
+        target_func = target if isinstance(target, EndpointTarget) else target.app
+        return recorder_class(target_func, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
 
     @property
     def default_provider(self) -> FeedbackProvider | None:
