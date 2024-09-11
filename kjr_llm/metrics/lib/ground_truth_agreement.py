@@ -1,7 +1,7 @@
 from typing import Self
 
-from trulens_eval import Feedback
-from trulens_eval.feedback import GroundTruthAgreement as GroundTruthAgreementTrulens
+from trulens.core.feedback.feedback import Feedback
+from trulens.feedback.groundtruth import GroundTruthAgreement as GroundTruthAgreementTrulens
 
 from ...prompts import PromptSet
 from ..metric import Metric
@@ -9,16 +9,12 @@ from ..metric import Metric
 
 class GroundTruthAgreement(Metric):
     def __init__(
-        self, golden_set: list[dict[str, str]] | PromptSet, agreement_measure: str = "agreement_measure"
+        self, golden_set: list[dict[str, str | None]] | PromptSet, agreement_measure: str = "agreement_measure"
     ) -> None:
         super().__init__()
 
-        if isinstance(golden_set, PromptSet):
-            golden_set_json = golden_set.as_golden_set()
-
-        self._validate_prompts(golden_set_json)
-
-        self.golden_set = golden_set
+        self.golden_set = golden_set.as_golden_set() if isinstance(golden_set, PromptSet) else golden_set
+        self._validate_prompts(self.golden_set)
         self.ground_truth_measure = agreement_measure
 
     @property
@@ -31,9 +27,9 @@ class GroundTruthAgreement(Metric):
 
     def _validate_prompts(self, prompts: list[dict[str, str | None]]) -> None:
         for prompt in prompts:
-            if not (prompt.get("query") and prompt.get("response")):
+            if not (prompt.get("query") and prompt.get("expected_response")):
                 print(prompt)
-                error_message: str = "All prompts in a ground truth prompt set must have 'query' and 'response'"
+                error_message: str = "All prompts in a ground truth prompt set require 'query' and 'expected_response'"
                 raise ValueError(error_message)
 
     def _feedback(self, provider: object) -> Feedback:

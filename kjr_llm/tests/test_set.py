@@ -1,14 +1,18 @@
 import uuid
 from typing import Self, TypeVar
 
-from trulens_eval import Feedback, TruBasicApp, TruChain, TruCustomApp, TruLlama
+from trulens.apps.basic import TruBasicApp
+from trulens.apps.custom import TruCustomApp
+from trulens.apps.langchain.tru_chain import TruChain
+from trulens.apps.llamaindex.tru_llama import TruLlama
+from trulens.core.feedback.feedback import Feedback
 from trulens_eval.schema.record import Record
 
 from ..exceptions import UnknownTargetError
 from ..metrics.metric import Metric
 from ..prompts.prompt_set import PromptSet
 from ..provider import FeedbackProvider
-from ..targets import CustomTarget, LangChainTarget, LlamaIndexTarget, Target
+from ..targets import CustomTarget, EndpointTarget, LangChainTarget, LlamaIndexTarget, Target
 
 TrulensApp = TypeVar("TrulensApp", TruChain, TruLlama, TruCustomApp, TruBasicApp)
 
@@ -79,15 +83,21 @@ class TestSet:
         if app_id is None:
             app_id = uuid.uuid4().hex
 
-        if not isinstance(target, LangChainTarget | LlamaIndexTarget | CustomTarget):
+        if not isinstance(target, LangChainTarget | LlamaIndexTarget | CustomTarget | EndpointTarget):
             raise UnknownTargetError()
 
         # Define a dictionary to map target types to their corresponding recorder classes
-        recorders = {LangChainTarget: TruChain, LlamaIndexTarget: TruLlama, CustomTarget: TruCustomApp}
+        recorders = {
+            LangChainTarget: TruChain,
+            LlamaIndexTarget: TruLlama,
+            CustomTarget: TruCustomApp,
+            EndpointTarget: TruCustomApp,
+        }
         recorder_class = recorders.get(type(target))
         if recorder_class is None:
             raise UnknownTargetError()
-        return recorder_class(target.app, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
+        target_func = target if isinstance(target, EndpointTarget) else target.app
+        return recorder_class(target_func, app_id=app_id, feedbacks=feedbacks, selector_nocheck=True)
 
     @property
     def default_provider(self) -> FeedbackProvider | None:

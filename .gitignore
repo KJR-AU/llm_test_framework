@@ -6,3 +6,5 @@ build/
 poetry.lock
 .ruff_cache/
 .mypy_cache/
+.streamlit/
+*.sqlite

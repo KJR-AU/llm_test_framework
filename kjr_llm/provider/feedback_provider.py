@@ -1,4 +1,4 @@
-from trulens_eval.feedback.provider import Provider
+from trulens.core.feedback.provider import Provider
 
 
 class FeedbackProvider:

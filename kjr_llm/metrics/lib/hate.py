@@ -1,4 +1,4 @@
-from trulens_eval import Feedback
+from trulens.core.feedback.feedback import Feedback
 
 from ...exceptions import MetricNotAvailableError
 from ..metric import Metric
@@ -9,7 +9,7 @@ class Hate(Metric):
         super().__init__(name="Hate", higher_is_better=False)
 
     def _feedback_with_selector(self, feedback: Feedback) -> Feedback:
-        return ()
+        return feedback.on_output()
 
     @property
     def feedback_name(self) -> str:

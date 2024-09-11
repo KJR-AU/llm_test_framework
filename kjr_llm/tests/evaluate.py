@@ -1,6 +1,11 @@
 import uuid
 
-from trulens_eval import Feedback, Tru, TruChain, TruLlama
+from trulens.apps.langchain.tru_chain import TruChain
+from trulens.apps.llamaindex.tru_llama import TruLlama
+from trulens.core.database.connector.default import DefaultDBConnector
+from trulens.core.feedback.feedback import Feedback
+from trulens.core.session import TruSession
+from trulens.dashboard import run_dashboard
 
 from ..exceptions.unknown_target_error import UnknownTargetError
 from ..prompts.prompt_set import PromptSet
@@ -36,7 +41,8 @@ def evaluate(
         raise UnknownTargetError()
 
     # Initialize the Tru object, which is used for managing the evaluation process
-    tru = Tru()
+    connector = DefaultDBConnector()
+    tru = TruSession(connector=connector)
     # Reset Tru object database
     tru.reset_database()
 
@@ -59,4 +65,4 @@ def evaluate(
             _ = target.invoke(prompt.input)
 
     # Run the dashboard to visualize the evaluation results
-    tru.run_dashboard()
+    run_dashboard(session=tru)
