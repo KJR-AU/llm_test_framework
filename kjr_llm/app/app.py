@@ -2,12 +2,13 @@ import uuid
 import webbrowser
 
 import pandas as pd
-from trulens.core.session import TruSession
-from trulens.core.database.connector.default import DefaultDBConnector
 from trulens.core.app import App as TrulensApp
+from trulens.core.database.connector.default import DefaultDBConnector
+from trulens.core.session import TruSession
+from trulens.dashboard import run_dashboard
 from trulens_eval.schema.record import Record
 from trulens_eval.utils.serial import Lens
-from trulens.dashboard import run_dashboard
+
 
 class App:
     def __init__(self, app_name: str | None = None, context: object | None = None, reset_database: bool = False):
