@@ -1,6 +1,6 @@
 import numpy as np
 from trulens.core.feedback.feedback import Feedback
-from trulens_eval.utils.serial import Lens
+from trulens.core.utils.serial import Lens
 
 from ..metric import Metric
 
