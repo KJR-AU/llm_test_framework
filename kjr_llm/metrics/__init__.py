@@ -10,6 +10,7 @@ from .lib.harassment_threatening import HarassmentThreatening
 from .lib.hate import Hate
 from .lib.insensitivity import Insensitivity
 from .lib.maliciousness import Maliciousness
+from .lib.pii import Pii
 from .lib.self_harm import SelfHarm
 from .lib.violence import Violence
 from .lib.violence_graphic import ViolenceGraphic
@@ -29,4 +30,5 @@ __all__ = [
     "SelfHarm",
     "Violence",
     "ViolenceGraphic",
+    "Pii",
 ]
