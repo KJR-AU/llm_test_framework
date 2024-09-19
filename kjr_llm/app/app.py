@@ -4,10 +4,10 @@ import webbrowser
 import pandas as pd
 from trulens.core.app import App as TrulensApp
 from trulens.core.database.connector.default import DefaultDBConnector
+from trulens.core.schema.record import Record
 from trulens.core.session import TruSession
+from trulens.core.utils.serial import Lens
 from trulens.dashboard import run_dashboard
-from trulens_eval.schema.record import Record
-from trulens_eval.utils.serial import Lens
 
 
 class App:
