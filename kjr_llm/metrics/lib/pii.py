@@ -87,5 +87,7 @@ class Pii(Metric):
 
     @property
     def llama3(self) -> Feedback:
-        feedback = self._feedback(CustomLiteLLMProvider())
+        feedback = self._feedback(
+            CustomLiteLLMProvider(model_engine="ollama/llama3", endpoint="http://20.211.144.69:11435")
+        )
         return self._feedback_with_selector(feedback)
