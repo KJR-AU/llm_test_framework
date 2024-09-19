@@ -6,7 +6,7 @@ from trulens.apps.custom import TruCustomApp
 from trulens.apps.langchain.tru_chain import TruChain
 from trulens.apps.llamaindex.tru_llama import TruLlama
 from trulens.core.feedback.feedback import Feedback
-from trulens_eval.schema.record import Record
+from trulens.core.schema.record import Record
 
 from ..exceptions import UnknownTargetError
 from ..metrics.metric import Metric

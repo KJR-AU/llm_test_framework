@@ -1,5 +1,5 @@
-from trulens_eval import Feedback
-from trulens_eval.feedback.provider import LiteLLM
+from trulens.core.feedback import Feedback
+from trulens.providers.litellm import LiteLLM
 
 from ...exceptions import MetricNotAvailableError
 from ..metric import Metric

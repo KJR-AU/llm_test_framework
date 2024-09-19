@@ -1,5 +1,5 @@
 import requests
-from trulens_eval.tru_custom_app import instrument
+from trulens.core.instruments import instrument
 
 from .target import Target
 

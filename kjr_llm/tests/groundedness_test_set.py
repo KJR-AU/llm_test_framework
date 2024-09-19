@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Self
 
-from trulens_eval.utils.serial import Lens
+from trulens.core.utils.serial import Lens
 
 from ..metrics import Groundedness
 from ..metrics.metric import Metric
