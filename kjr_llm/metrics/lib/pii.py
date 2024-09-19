@@ -87,7 +87,10 @@ class Pii(Metric):
 
     @property
     def llama3(self) -> Feedback:
-        feedback = self._feedback(
-            CustomLiteLLMProvider(model_engine="ollama/llama3", endpoint="http://20.211.144.69:11435")
-        )
+        provider = CustomLiteLLMProvider()
+        provider.model_engine = "ollama/llama3"
+        provider.completion_args = {
+            'api_base': 'http://20.211.144.69:11435'
+        }
+        feedback = self._feedback(provider)
         return self._feedback_with_selector(feedback)
